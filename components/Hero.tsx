@@ -1,168 +1,130 @@
-import { useId } from "react";
-
 import Image from "next/image";
+import Link from "next/link";
+import {
+  BarChart3,
+  Search,
+  Sparkles,
+} from "lucide-react";
+
 import { AppStoreLink } from "@/components/AppStoreLink";
-import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { PhoneFrame } from "@/components/PhoneFrame";
-import logoBbc from "@/images/logos/bbc.svg";
-import logoCbs from "@/images/logos/cbs.svg";
-import logoCnn from "@/images/logos/cnn.svg";
-import logoFastCompany from "@/images/logos/fast-company.svg";
-import logoForbes from "@/images/logos/forbes.svg";
-import logoHuffpost from "@/images/logos/huffpost.svg";
-import logoTechcrunch from "@/images/logos/techcrunch.svg";
-import logoWired from "@/images/logos/wired.svg";
+import { getLatestFeatures } from "@/constants/latestFeatures";
+import { Dictionary, Language } from "@/dictionaries";
 
-import screenshot1 from "@/public/screenshot1.png";
-import { Dictionary } from "@/dictionaries";
+import overviewScreenshot from "@/public/screenshots/overview.webp";
 
-function BackgroundIllustration(props: React.ComponentPropsWithoutRef<"div">) {
-  let id = useId();
+function HeroFeatureVisual({ index }: { index: number }) {
+  if (index === 0) {
+    return (
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        {["Text", "Image", "Audio"].map((item) => (
+          <span
+            key={item}
+            className="rounded-full border border-ink-200/30 bg-ink-900/45 px-2.5 py-1 text-[11px] text-ink-100"
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  if (index === 1) {
+    return (
+      <div className="mt-3 rounded-lg border border-ink-200/25 bg-ink-900/45 p-2.5">
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-ember-300/80" />
+          <span className="h-2 w-2 rounded-full bg-amber-300/70" />
+          <span className="h-2 w-2 rounded-full bg-ink-200/50" />
+        </div>
+        <div className="mt-2 space-y-1.5">
+          <div className="h-1.5 w-4/5 rounded-full bg-ink-200/25" />
+          <div className="h-1.5 w-3/5 rounded-full bg-ink-200/25" />
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div {...props}>
-      <svg
-        viewBox="0 0 1026 1026"
-        fill="none"
-        aria-hidden="true"
-        className="absolute inset-0 h-full w-full animate-spin-slow"
-      >
-        <path
-          d="M1025 513c0 282.77-229.23 512-512 512S1 795.77 1 513 230.23 1 513 1s512 229.23 512 512Z"
-          stroke="#D4D4D4"
-          strokeOpacity="0.7"
-        />
-        <path
-          d="M513 1025C230.23 1025 1 795.77 1 513"
-          stroke={`url(#${id}-gradient-1)`}
-          strokeLinecap="round"
-        />
-        <defs>
-          <linearGradient
-            id={`${id}-gradient-1`}
-            x1="1"
-            y1="513"
-            x2="1"
-            y2="1025"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#f97316" />
-            <stop offset="1" stopColor="#f97316" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-      </svg>
-      <svg
-        viewBox="0 0 1026 1026"
-        fill="none"
-        aria-hidden="true"
-        className="absolute inset-0 h-full w-full animate-spin-reverse-slower"
-      >
-        <path
-          d="M913 513c0 220.914-179.086 400-400 400S113 733.914 113 513s179.086-400 400-400 400 179.086 400 400Z"
-          stroke="#D4D4D4"
-          strokeOpacity="0.7"
-        />
-        <path
-          d="M913 513c0 220.914-179.086 400-400 400"
-          stroke={`url(#${id}-gradient-2)`}
-          strokeLinecap="round"
-        />
-        <defs>
-          <linearGradient
-            id={`${id}-gradient-2`}
-            x1="913"
-            y1="513"
-            x2="913"
-            y2="913"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#f97316" />
-            <stop offset="1" stopColor="#f97316" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-      </svg>
+    <div className="mt-3 rounded-lg border border-ink-200/25 bg-ink-900/45 p-2.5">
+      <div className="flex items-center gap-2 rounded-md border border-ink-200/20 bg-ink-900/60 px-2 py-1 text-[11px] text-ink-100">
+        <span>⌕</span>
+        <span className="truncate">voice memo ideas</span>
+      </div>
+      <div className="mt-2 h-1.5 w-2/3 rounded-full bg-ink-200/25" />
     </div>
-  );
-}
-
-function PlayIcon(props: React.ComponentPropsWithoutRef<"svg">) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
-      <circle cx="12" cy="12" r="11.5" stroke="#D4D4D4" />
-      <path
-        d="M9.5 14.382V9.618a.5.5 0 0 1 .724-.447l4.764 2.382a.5.5 0 0 1 0 .894l-4.764 2.382a.5.5 0 0 1-.724-.447Z"
-        fill="#A3A3A3"
-        stroke="#A3A3A3"
-      />
-    </svg>
   );
 }
 
 export function Hero({ dict }: { dict: Dictionary }) {
+  const lang = (dict.urls.home.split("/")[1] as Language) || "en";
+  const latestFeatures = getLatestFeatures(lang);
+  const featureIcons = [Sparkles, Search, BarChart3] as const;
+
   return (
-    <div className="overflow-hidden py-10 sm:py-32 lg:pb-32 xl:pb-36">
+    <section className="pb-16 pt-10 sm:pb-24 sm:pt-16">
       <Container>
-        <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
-          <div className="relative z-10 mx-auto max-w-2xl lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6">
-            <h1 className="text-4xl font-medium tracking-tight text-stone-900">
+        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_28rem] xl:grid-cols-[minmax(0,1fr)_32rem]">
+          <div className="animate-fade-in-up">
+            <p className="mb-4 inline-flex rounded-full border border-ember-300/45 bg-ember-500/15 px-4 py-1 text-xs font-semibold tracking-[0.18em] text-ember-200 uppercase">
+              Spark Memos
+            </p>
+            <h1 className="text-display text-balance text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
               {dict.homeSections.hero.title}
             </h1>
-            <p className="mt-6 text-lg text-stone-600">
+            <p className="mt-6 max-w-2xl text-balance text-lg leading-relaxed text-ink-100 sm:text-xl">
               {dict.homeSections.hero.description}
             </p>
-            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
+
+            <div className="mt-8 flex flex-wrap items-center gap-4">
               <AppStoreLink />
-              {/* <Button
-                className="flex items-center"
-                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                variant="outline"
+              <Link
+                href={dict.urls.blog}
+                className="rounded-full border border-ink-200/35 px-5 py-2.5 text-sm font-semibold tracking-wide text-ink-100 hover:border-ink-200/65 hover:bg-ink-100/10 hover:text-white"
               >
-                <PlayIcon className="h-6 w-6 flex-none" />
-                <span className="ml-2.5">Watch the video</span>
-              </Button> */}
+                {dict.labels.blog}
+              </Link>
+            </div>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-3">
+              {latestFeatures.slice(0, 3).map((feature, index) => {
+                const Icon = featureIcons[index] ?? Sparkles;
+
+                return (
+                  <article key={feature.title} className="panel-stroke rounded-2xl bg-ink-900/45 p-4">
+                    <div className="flex items-center justify-between">
+                      <span className="inline-flex rounded-lg border border-ember-300/40 bg-ember-400/10 p-2 text-ember-200">
+                        <Icon className="h-4 w-4" />
+                      </span>
+                      <span className="text-xs font-semibold tracking-[0.18em] text-ink-200">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <h2 className="mt-3 text-sm font-semibold text-white">{feature.title}</h2>
+                    <p className="mt-2 text-sm leading-6 text-ink-100">{feature.description}</p>
+                    <HeroFeatureVisual index={index} />
+                  </article>
+                );
+              })}
             </div>
           </div>
-          <div className="relative mt-10 sm:mt-20 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6">
-            <BackgroundIllustration className="absolute left-1/2 top-4 h-[1026px] w-[1026px] -translate-x-1/3 stroke-stone-300/70 [mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] sm:top-16 sm:-translate-x-1/2 lg:-top-16 lg:ml-12 xl:-top-14 xl:ml-0" />
-            <div className="-mx-4 h-[448px] px-9 [mask-image:linear-gradient(to_bottom,white_60%,transparent)] sm:mx-0 lg:absolute lg:-inset-x-10 lg:-bottom-20 lg:-top-10 lg:h-auto lg:px-0 lg:pt-10 xl:-bottom-32">
-              <PhoneFrame className="mx-auto max-w-[366px]" priority>
-                <Image
-                  className="relative -top-7"
-                  src={screenshot1}
-                  width={366}
-                  height={448}
-                  alt="App screenshot"
-                />
-              </PhoneFrame>
-            </div>
+
+          <div
+            className="animate-fade-in-up flex justify-center lg:pt-6"
+            style={{ animationDelay: "180ms" }}
+          >
+            <PhoneFrame className="w-full max-w-[320px] drop-shadow-[0_28px_60px_rgba(5,8,16,0.58)]">
+              <Image
+                className="h-full w-full object-contain"
+                src={overviewScreenshot}
+                alt="Spark Memos overview screen"
+                priority
+              />
+            </PhoneFrame>
           </div>
-          {/* <div className="relative -mt-4 lg:col-span-7 lg:mt-0 xl:col-span-6">
-            <p className="text-center text-sm font-semibold text-stone-900 lg:text-left">
-              As featured in
-            </p>
-            <ul
-              role="list"
-              className="mx-auto mt-8 flex max-w-xl flex-wrap justify-center gap-x-10 gap-y-8 lg:mx-0 lg:justify-start"
-            >
-              {[
-                ['Forbes', logoForbes],
-                ['TechCrunch', logoTechcrunch],
-                ['Wired', logoWired],
-                ['CNN', logoCnn, 'hidden xl:block'],
-                ['BBC', logoBbc],
-                ['CBS', logoCbs],
-                ['Fast Company', logoFastCompany],
-                ['HuffPost', logoHuffpost, 'hidden xl:block'],
-              ].map(([name, logo, className]) => (
-                <li key={name} className={clsx('flex', className)}>
-                  <Image src={logo} alt={name} className="h-8" unoptimized />
-                </li>
-              ))}
-            </ul>
-          </div> */}
         </div>
       </Container>
-    </div>
+    </section>
   );
 }

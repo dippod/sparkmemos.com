@@ -137,7 +137,7 @@ const dictionary = {
       annuallyLabel: "연간",
       plans: [
         {
-          name: "체험판",
+          name: "Freemium",
           featured: false,
           price: { Monthly: "₩0", Annually: "₩0" },
           description:
@@ -146,11 +146,11 @@ const dictionary = {
             label: "무료로 시작하기",
             href: METADATA.appStoreLink,
           },
-          features: ["3개의 컬렉션 제한", "무제한 메모"],
+          features: ["5개의 컬렉션 제한", "무제한 메모"],
           logomarkClassName: "fill-stone-300",
         },
         {
-          name: "전체 구독",
+          name: "Premium",
           featured: true,
           price: { Monthly: "₩3,300", Annually: "₩14,000" },
           description: "앱을 구독하여 지속적인 업데이트와 지원을 받으세요.",
@@ -159,7 +159,7 @@ const dictionary = {
             href: METADATA.appStoreLink,
           },
           features: [
-            "모든 체험판 기능",
+            "Freemium의 모든 기능",
             "iCloud 동기화",
             "무제한 컬렉션",
             "테마 커스터마이제이션",
@@ -167,7 +167,7 @@ const dictionary = {
           logomarkClassName: "fill-stone-500",
         },
         {
-          name: "평생",
+          name: "Lifetime",
           featured: false,
           price: { Monthly: "₩66,000", Annually: "₩66,000" },
           description:

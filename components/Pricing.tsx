@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Radio, RadioGroup } from "@headlessui/react";
 import clsx from "clsx";
 
 import { Button } from "@/components/Button";
@@ -13,16 +12,10 @@ function CheckIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
       <path
-        d="M9.307 12.248a.75.75 0 1 0-1.114 1.004l1.114-1.004ZM11 15.25l-.557.502a.75.75 0 0 0 1.15-.043L11 15.25Zm4.844-5.041a.75.75 0 0 0-1.188-.918l1.188.918Zm-7.651 3.043 2.25 2.5 1.114-1.004-2.25-2.5-1.114 1.004Zm3.4 2.457 4.25-5.5-1.187-.918-4.25 5.5 1.188.918Z"
-        fill="currentColor"
-      />
-      <circle
-        cx="12"
-        cy="12"
-        r="8.25"
+        d="M20 7.5 10 17.5l-6-6"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.5"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -37,8 +30,8 @@ function Plan({
   button,
   features,
   activePeriod,
-  logomarkClassName,
   featured = false,
+  logomarkClassName,
 }: {
   name: string;
   price: {
@@ -55,172 +48,95 @@ function Plan({
   logomarkClassName?: string;
   featured?: boolean;
 }) {
+  const currentPrice = activePeriod === "Monthly" ? price.Monthly : price.Annually;
+  const showPeriodTag = featured;
+
   return (
-    <section
+    <article
       className={clsx(
-        "flex flex-col overflow-hidden rounded-3xl p-6 shadow-lg shadow-stone-900/5",
-        featured ? "order-first bg-stone-900 lg:order-none" : "bg-white"
+        "relative z-10 rounded-3xl p-6 sm:p-7",
+        featured
+          ? "border border-ember-300/55 bg-gradient-to-br from-ember-500/18 to-ink-900/70 shadow-[0_20px_48px_rgba(241,79,16,0.3)]"
+          : "glass-panel"
       )}
     >
-      <h3
-        className={clsx(
-          "flex items-center text-sm font-semibold",
-          featured ? "text-white" : "text-stone-900"
-        )}
-      >
-        <Logomark className={clsx("h-6 w-6 flex-none", logomarkClassName)} />
-        <span className="ml-4">{name}</span>
-      </h3>
-      <p
-        className={clsx(
-          "relative mt-5 flex text-3xl tracking-tight",
-          featured ? "text-white" : "text-stone-900"
-        )}
-      >
-        {price.Monthly === price.Annually ? (
-          price.Monthly
-        ) : (
-          <>
-            <span
-              aria-hidden={activePeriod === "Annually"}
-              className={clsx(
-                "transition duration-300",
-                activePeriod === "Annually" &&
-                  "pointer-events-none translate-x-6 select-none opacity-0"
-              )}
-            >
-              {price.Monthly}
-            </span>
-            <span
-              aria-hidden={activePeriod === "Monthly"}
-              className={clsx(
-                "absolute left-0 top-0 transition duration-300",
-                activePeriod === "Monthly" &&
-                  "pointer-events-none -translate-x-6 select-none opacity-0"
-              )}
-            >
-              {price.Annually}
-            </span>
-          </>
-        )}
-      </p>
-      <p
-        className={clsx(
-          "mt-3 text-sm",
-          featured ? "text-stone-300" : "text-stone-700"
-        )}
-      >
-        {description}
-      </p>
-      <div className="order-last mt-6">
-        <ul
-          role="list"
-          className={clsx(
-            "-my-2 divide-y text-sm",
-            featured
-              ? "divide-stone-800 text-stone-300"
-              : "divide-stone-200 text-stone-700"
-          )}
-        >
-          {features.map((feature) => (
-            <li key={feature} className="flex py-2">
-              <CheckIcon
-                className={clsx(
-                  "h-6 w-6 flex-none",
-                  featured ? "text-white" : "text-orange-500"
-                )}
-              />
-              <span className="ml-4">{feature}</span>
-            </li>
-          ))}
-        </ul>
+      <div className="flex items-center gap-3">
+        <Logomark className={clsx("h-9 w-9 rounded-lg", logomarkClassName)} />
+        <h3 className="text-lg font-semibold text-white">{name}</h3>
       </div>
+
+      <div className="mt-5 flex items-end gap-2">
+        <p className="text-display text-4xl text-white">{currentPrice}</p>
+        {showPeriodTag ? (
+          <p className="text-sm text-ink-100">/{activePeriod === "Monthly" ? "mo" : "yr"}</p>
+        ) : null}
+      </div>
+
+      <p className="mt-3 text-sm leading-6 text-ink-100">{description}</p>
+
+      <ul className="mt-6 space-y-2">
+        {features.map((feature) => (
+          <li key={feature} className="flex items-start gap-2 text-sm text-ink-50">
+            <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-ember-300" />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+
       <Button
         href={button.href}
         color={featured ? "orange" : "gray"}
-        className="mt-6"
-        aria-label={`Get started with the ${name} plan for ${price}`}
+        className="mt-6 w-full"
+        aria-label={`Get started with the ${name} plan for ${currentPrice}`}
       >
         {button.label}
       </Button>
-    </section>
+    </article>
   );
 }
 
 export function Pricing({ dict }: { dict: Dictionary }) {
-  let [activePeriod, setActivePeriod] = useState<"Monthly" | "Annually">(
-    "Monthly"
-  );
+  const [activePeriod, setActivePeriod] = useState<"Monthly" | "Annually">("Monthly");
 
   return (
-    <section
-      id="pricing"
-      aria-labelledby="pricing-title"
-      className="border-t border-stone-200 bg-stone-100 py-20 sm:py-32"
-    >
+    <section id="pricing" className="relative isolate py-12 sm:py-20">
       <Container>
-        <div className="mx-auto max-w-2xl text-center">
-          <h2
-            id="pricing-title"
-            className="text-3xl font-medium tracking-tight text-stone-900"
-          >
+        <div className="relative z-10 mx-auto max-w-3xl text-center">
+          <p className="inline-flex rounded-full border border-ink-200/40 bg-ink-200/10 px-4 py-1 text-xs font-semibold tracking-[0.18em] text-ink-100 uppercase">
+            {dict.labels.pricing}
+          </p>
+          <h2 className="text-display mt-4 text-balance text-3xl text-white sm:text-4xl">
             {dict.homeSections.pricing.title}
           </h2>
-          <p className="mt-2 text-lg text-stone-600">
-            {dict.homeSections.pricing.description}
-          </p>
+          <p className="mt-3 text-lg text-ink-100">{dict.homeSections.pricing.description}</p>
         </div>
 
-        <div className="mt-8 flex justify-center">
-          <div className="relative">
-            <RadioGroup
-              value={activePeriod}
-              onChange={setActivePeriod}
-              className="grid grid-cols-2"
-            >
-              {["Monthly", "Annually"].map((period) => (
-                <Radio
+        <div className="relative z-10 mt-8 flex justify-center">
+          <div className="glass-panel inline-flex rounded-full p-1">
+            {(["Monthly", "Annually"] as const).map((period) => {
+              const active = period === activePeriod;
+              return (
+                <button
                   key={period}
-                  value={period}
+                  type="button"
+                  onClick={() => setActivePeriod(period)}
                   className={clsx(
-                    "cursor-pointer border border-stone-300 px-[calc(theme(spacing.3)-1px)] py-[calc(theme(spacing.2)-1px)] text-sm text-stone-700 transition-colors hover:border-stone-400",
-                    period === "Monthly"
-                      ? "rounded-l-lg"
-                      : "-ml-px rounded-r-lg"
+                    "rounded-full px-5 py-2 text-sm font-semibold transition",
+                    active
+                      ? "bg-ember-500 text-white shadow-[0_8px_24px_rgba(241,79,16,0.45)]"
+                      : "text-ink-100 hover:text-white"
                   )}
                 >
                   {period === "Monthly"
                     ? dict.homeSections.pricing.monthlyLabel
                     : dict.homeSections.pricing.annuallyLabel}
-                </Radio>
-              ))}
-            </RadioGroup>
-            <div
-              aria-hidden="true"
-              className={clsx(
-                "pointer-events-none absolute inset-0 z-10 grid grid-cols-2 overflow-hidden rounded-lg bg-orange-500 transition-all duration-300",
-                activePeriod === "Monthly"
-                  ? "[clip-path:inset(0_50%_0_0)]"
-                  : "[clip-path:inset(0_0_0_50%)]"
-              )}
-            >
-              {["Monthly", "Annually"].map((period) => (
-                <div
-                  key={period}
-                  className={clsx(
-                    "py-2 text-center text-sm font-semibold text-white"
-                  )}
-                >
-                  {period === "Monthly"
-                    ? dict.homeSections.pricing.monthlyLabel
-                    : dict.homeSections.pricing.annuallyLabel}
-                </div>
-              ))}
-            </div>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-10 sm:mt-20 lg:max-w-none lg:grid-cols-3">
+        <div className="relative z-10 mt-8 grid gap-4 lg:grid-cols-3">
           {dict.homeSections.pricing.plans.map((plan) => (
             <Plan key={plan.name} {...plan} activePeriod={activePeriod} />
           ))}

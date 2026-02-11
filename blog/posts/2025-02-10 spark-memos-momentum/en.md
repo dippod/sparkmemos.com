@@ -1,5 +1,5 @@
 ---
-title: Spark Memos: the fastest way to turn sparks into shippable ideas
+title: "Spark Memos: the fastest way to turn sparks into shippable ideas"
 slug: spark-memos-momentum
 lang: en
 date: 2025-02-10 00:00:00

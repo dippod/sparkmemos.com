@@ -34,7 +34,7 @@ export default async function Home({
   const dict = await getDictionary(lang);
 
   return (
-    <>
+    <div className="space-y-1 pb-2">
       <Hero dict={dict} />
       <PrimaryFeatures dict={dict} />
       <SecondaryFeatures dict={dict} />
@@ -42,6 +42,6 @@ export default async function Home({
       <Reviews dict={dict} />
       <Pricing dict={dict} />
       <Faqs dict={dict} />
-    </>
+    </div>
   );
 }

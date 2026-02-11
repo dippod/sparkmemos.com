@@ -30,7 +30,6 @@
     "react": "^19",
     "react-dom": "^19",
     "rehype-pretty-code": "^0.14.1",
-    "use-debounce": "^10.0.5",
     "velite": "^0.2.4"
   },
   "devDependencies": {

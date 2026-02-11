@@ -138,7 +138,7 @@ const dictionary = {
       annuallyLabel: "年額",
       plans: [
         {
-          name: "トライアル",
+          name: "Freemium",
           featured: false,
           price: { Monthly: "¥0", Annually: "¥0" },
           description:
@@ -147,11 +147,11 @@ const dictionary = {
             label: "無料で始める",
             href: METADATA.appStoreLink,
           },
-          features: ["3コレクション制限", "無制限のメモ"],
+          features: ["5コレクション制限", "無制限のメモ"],
           logomarkClassName: "fill-stone-300",
         },
         {
-          name: "フルサブスクリプション",
+          name: "Premium",
           featured: true,
           price: { Monthly: "¥300", Annually: "¥1,500" },
           description:
@@ -161,7 +161,7 @@ const dictionary = {
             href: METADATA.appStoreLink,
           },
           features: [
-            "すべてのトライアル機能",
+            "Freemium のすべての機能",
             "iCloud同期",
             "無制限のコレクション",
             "テーマのカスタマイズ",
@@ -169,7 +169,7 @@ const dictionary = {
           logomarkClassName: "fill-stone-500",
         },
         {
-          name: "ライフタイム",
+          name: "Lifetime",
           featured: false,
           price: { Monthly: "¥7000", Annually: "¥7000" },
           description:

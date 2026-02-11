@@ -19,8 +19,10 @@ export async function generateMetadata({
 
 export default function MdxLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col p-4 mt-10 mb-20 mx-auto prose">
-      {children}
-    </div>
+    <main className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-10">
+      <article className="glass-panel prose prose-invert mx-auto max-w-3xl rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
+        {children}
+      </article>
+    </main>
   );
 }

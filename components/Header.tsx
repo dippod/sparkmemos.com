@@ -37,113 +37,97 @@ function ChevronUpIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   );
 }
 
-function MobileNavLink(
-  props: Omit<
-    React.ComponentPropsWithoutRef<typeof Popover.Button<typeof Link>>,
-    "as" | "className"
-  >
-) {
-  return (
-    <Popover.Button
-      as={Link}
-      className="block text-base leading-7 tracking-tight text-stone-700"
-      {...props}
-    />
-  );
-}
-
 export function Header({ dict }: { dict: Dictionary }) {
+  const mobileLinks = [
+    [dict.labels.features, `${dict.urls.home}#features`],
+    [dict.labels.reviews, `${dict.urls.home}#reviews`],
+    [dict.labels.pricing, `${dict.urls.home}#pricing`],
+    [dict.labels.faq, `${dict.urls.home}#faqs`],
+    [dict.labels.blog, dict.urls.blog],
+    [dict.labels.userTerms, dict.urls.terms],
+    [dict.labels.privacyPolicy, dict.urls.privacy],
+  ];
+
   return (
-    <header>
+    <header className="sticky top-0 z-50 pt-4 md:pt-6">
       <nav>
-        <Container className="relative z-50 flex justify-between py-8">
-          <div className="relative z-10 flex items-center gap-16">
-            <Link href={dict.urls.home} aria-label="Home">
-              <Logo className="h-10 w-auto" label={dict.websiteName} />
-            </Link>
-            <div className="hidden lg:flex lg:gap-10">
-              <NavLinks type="header" dict={dict} />
+        <Container className="relative">
+          <div className="glass-panel flex items-center justify-between gap-3 rounded-2xl px-4 py-3 md:px-5">
+            <div className="flex min-w-0 items-center gap-3 lg:gap-10">
+              <Link href={dict.urls.home} aria-label="Home" className="shrink-0">
+                <Logo className="h-10 w-auto text-white" label={dict.websiteName} />
+              </Link>
+              <div className="hidden lg:flex lg:flex-wrap lg:items-center lg:gap-2">
+                <NavLinks type="header" dict={dict} />
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-6">
-            <Popover className="lg:hidden">
-              {({ open }) => (
-                <>
-                  <Popover.Button
-                    className="relative z-10 -m-2 inline-flex items-center rounded-lg stroke-stone-900 p-2 hover:bg-stone-200/50 hover:stroke-stone-600 active:stroke-stone-900 ui-not-focus-visible:outline-none"
-                    aria-label="Toggle site navigation"
-                  >
-                    {({ open }) =>
-                      open ? (
-                        <ChevronUpIcon className="h-6 w-6" />
+            <div className="flex items-center gap-3">
+              <Button
+                href={METADATA.appStoreLink}
+                target="_blank"
+                className="hidden md:inline-flex"
+              >
+                {dict.labels.download}
+              </Button>
+              <Popover className="lg:hidden">
+                {({ open }) => (
+                  <>
+                    <Popover.Button
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-ink-200/30 bg-ink-900/70 text-ink-100 ui-not-focus-visible:outline-none"
+                      aria-label="Toggle site navigation"
+                    >
+                      {open ? (
+                        <ChevronUpIcon className="h-5 w-5 stroke-current" />
                       ) : (
-                        <MenuIcon className="h-6 w-6" />
-                      )
-                    }
-                  </Popover.Button>
-                  <AnimatePresence initial={false}>
-                    {open && (
-                      <>
-                        <Popover.Overlay
-                          static
-                          as={motion.div}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="fixed inset-0 z-0 bg-stone-300/60 backdrop-blur"
-                        />
-                        <Popover.Panel
-                          static
-                          as={motion.div}
-                          initial={{ opacity: 0, y: -32 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{
-                            opacity: 0,
-                            y: -32,
-                            transition: { duration: 0.2 },
-                          }}
-                          className="absolute inset-x-0 top-0 z-0 origin-top rounded-b-2xl bg-stone-50 px-6 pb-6 pt-32 shadow-2xl shadow-stone-900/20"
-                        >
-                          <div className="space-y-4">
-                            <MobileNavLink href="/#features">
-                              {dict.labels.features}
-                            </MobileNavLink>
-                            <MobileNavLink href="/#reviews">
-                              {dict.labels.reviews}
-                            </MobileNavLink>
-                            <MobileNavLink href="/#pricing">
-                              {dict.labels.pricing}
-                            </MobileNavLink>
-                            <MobileNavLink href="/#faqs">FAQs</MobileNavLink>
-                            <MobileNavLink href="/terms">
-                              {dict.labels.userTerms}
-                            </MobileNavLink>
-                            <MobileNavLink href="/privacy">
-                              {dict.labels.privacyPolicy}
-                            </MobileNavLink>
-                          </div>
-                          <div className="mt-8 flex flex-col gap-4">
+                        <MenuIcon className="h-5 w-5 stroke-current" />
+                      )}
+                    </Popover.Button>
+                    <AnimatePresence initial={false}>
+                      {open && (
+                        <>
+                          <Popover.Overlay
+                            static
+                            as={motion.div}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 bg-[#03050a]/55 backdrop-blur-sm"
+                          />
+                          <Popover.Panel
+                            static
+                            as={motion.div}
+                            initial={{ opacity: 0, y: -18 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -18 }}
+                            className="glass-panel absolute inset-x-0 top-[calc(100%+0.75rem)] rounded-2xl p-4"
+                          >
+                            <div className="grid gap-2">
+                              {mobileLinks.map(([label, href]) => (
+                                <Popover.Button
+                                  as={Link}
+                                  href={href}
+                                  key={href}
+                                  className="rounded-xl border border-transparent px-3 py-2 text-left text-sm text-ink-50 hover:border-ink-200/30 hover:bg-ink-200/10"
+                                >
+                                  {label}
+                                </Popover.Button>
+                              ))}
+                            </div>
                             <Button
                               href={METADATA.appStoreLink}
                               target="_blank"
+                              className="mt-4 w-full"
                             >
                               {dict.labels.downloadTheApp}
                             </Button>
-                          </div>
-                        </Popover.Panel>
-                      </>
-                    )}
-                  </AnimatePresence>
-                </>
-              )}
-            </Popover>
-            <Button
-              href={METADATA.appStoreLink}
-              target="_blank"
-              className="hidden lg:block"
-            >
-              {dict.labels.download}
-            </Button>
+                          </Popover.Panel>
+                        </>
+                      )}
+                    </AnimatePresence>
+                  </>
+                )}
+              </Popover>
+            </div>
           </div>
         </Container>
       </nav>

@@ -29,8 +29,8 @@ export function Logo({
       aria-hidden="true"
       {...props}
     >
-      <Logomark />
-      <span className="text-xl font-semibold">{label}</span>
+      <Logomark className="shadow-[0_8px_20px_rgba(10,14,23,0.42)]" />
+      <span className="text-display text-xl tracking-wide">{label}</span>
     </div>
   );
 }

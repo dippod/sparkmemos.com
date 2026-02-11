@@ -1,5 +1,5 @@
 ---
-title: Spark Memos: 번뜩임을 가장 빠르게 공유 가능한 아이디어로 바꾸는 방법
+title: "Spark Memos: 번뜩임을 가장 빠르게 공유 가능한 아이디어로 바꾸는 방법"
 slug: spark-memos-momentum
 lang: ko
 date: 2025-02-10 00:00:00

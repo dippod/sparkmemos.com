@@ -139,7 +139,7 @@ const dictionary = {
       annuallyLabel: "Annuale",
       plans: [
         {
-          name: "Prova",
+          name: "Freemium",
           featured: false,
           price: { Monthly: "0 €", Annually: "0 €" },
           description: "Vuoi provare l'app subito. Inizia gratuitamente.",
@@ -147,11 +147,11 @@ const dictionary = {
             label: "Inizia gratuitamente",
             href: METADATA.appStoreLink,
           },
-          features: ["Limitato a 3 collezioni", "Promemoria illimitati"],
+          features: ["Limitato a 5 collezioni", "Promemoria illimitati"],
           logomarkClassName: "fill-stone-300",
         },
         {
-          name: "Abbonamento completo",
+          name: "Premium",
           featured: true,
           price: { Monthly: "1,99 €", Annually: "9,99 €" },
           description:
@@ -161,7 +161,7 @@ const dictionary = {
             href: METADATA.appStoreLink,
           },
           features: [
-            "Tutte le funzionalità di prova",
+            "Tutte le funzionalità Freemium",
             "Sincronizzazione iCloud",
             "Collezioni illimitate",
             "Personalizzazione del tema",
@@ -169,7 +169,7 @@ const dictionary = {
           logomarkClassName: "fill-stone-500",
         },
         {
-          name: "A vita",
+          name: "Lifetime",
           featured: false,
           price: { Monthly: "59,99 €", Annually: "59,99 €" },
           description:

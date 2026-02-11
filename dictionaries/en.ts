@@ -139,7 +139,7 @@ const dictionary = {
       annuallyLabel: "Annually",
       plans: [
         {
-          name: "Trial",
+          name: "Freemium",
           featured: false,
           price: { Monthly: "$0", Annually: "$0" },
           description:
@@ -148,11 +148,11 @@ const dictionary = {
             label: "Get started for free",
             href: METADATA.appStoreLink,
           },
-          features: ["3 Collections limited", "Unlimited memos"],
+          features: ["5 Collections limited", "Unlimited memos"],
           logomarkClassName: "fill-stone-300",
         },
         {
-          name: "Full subscription",
+          name: "Premium",
           featured: true,
           price: { Monthly: "$1.9", Annually: "$9.9" },
           description:
@@ -162,7 +162,7 @@ const dictionary = {
             href: METADATA.appStoreLink,
           },
           features: [
-            "All trial features",
+            "All Freemium features",
             "iCloud Sync",
             "Unlimited Collections",
             "Theme Customization",

@@ -3,23 +3,23 @@ import clsx from "clsx";
 
 const baseStyles = {
   solid:
-    "inline-flex justify-center rounded-lg py-2 px-3 text-sm font-semibold outline-none focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors",
+    "inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold tracking-wide outline-none transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember-400",
   outline:
-    "inline-flex justify-center rounded-lg border py-[calc(theme(spacing.2)-1px)] px-[calc(theme(spacing.3)-1px)] text-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors",
+    "inline-flex items-center justify-center rounded-full border px-5 py-2.5 text-sm font-semibold tracking-wide outline-none transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember-400",
 };
 
 const variantStyles = {
   solid: {
     orange:
-      "relative overflow-hidden bg-orange-500 text-white before:absolute before:inset-0 active:before:bg-transparent hover:before:bg-white/10 active:bg-orange-600 active:text-white/80 before:transition-colors",
+      "bg-gradient-to-r from-ember-500 to-ember-400 text-white shadow-[0_14px_34px_rgba(241,79,16,0.45)] hover:brightness-110 active:brightness-95",
     white:
-      "bg-white text-orange-900 hover:bg-white/90 active:bg-white/90 active:text-orange-900/70",
-    gray: "bg-stone-800 text-white hover:bg-stone-900 active:bg-stone-800 active:text-white/80",
+      "bg-white text-ink-900 shadow-[0_14px_30px_rgba(255,187,135,0.3)] hover:bg-ink-50 active:bg-white/90",
+    gray: "glass-panel text-ink-50 hover:border-ink-200/40 hover:text-white",
   },
   outline: {
     orange:
-      "border-orange-500 text-orange-500 hover:border-orange-600 active:bg-orange-50 active:text-orange-600/80",
-    gray: "border-stone-300 text-stone-700 hover:border-stone-400 active:bg-stone-100 active:text-stone-700/80",
+      "border-ember-400/80 text-ember-200 hover:border-ember-300 hover:text-ember-100 hover:bg-ember-400/10",
+    gray: "border-ink-300/40 text-ink-100 hover:border-ink-200/55 hover:text-white hover:bg-ink-300/10",
   },
 };
 

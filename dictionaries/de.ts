@@ -142,7 +142,7 @@ const dictionary = {
       annuallyLabel: "Jährlich",
       plans: [
         {
-          name: "Testversion",
+          name: "Freemium",
           featured: false,
           price: { Monthly: "0 €", Annually: "0 €" },
           description:
@@ -151,11 +151,11 @@ const dictionary = {
             label: "Kostenlos starten",
             href: METADATA.appStoreLink,
           },
-          features: ["Auf 3 Sammlungen begrenzt", "Unbegrenzte Notizen"],
+          features: ["Auf 5 Sammlungen begrenzt", "Unbegrenzte Notizen"],
           logomarkClassName: "fill-stone-300",
         },
         {
-          name: "Vollständiges Abonnement",
+          name: "Premium",
           featured: true,
           price: { Monthly: "1,99 €", Annually: "9,99 €" },
           description:
@@ -165,7 +165,7 @@ const dictionary = {
             href: METADATA.appStoreLink,
           },
           features: [
-            "Alle Testfunktionen",
+            "Alle Freemium-Funktionen",
             "iCloud-Synchronisation",
             "Unbegrenzte Sammlungen",
             "Design-Anpassung",
@@ -173,7 +173,7 @@ const dictionary = {
           logomarkClassName: "fill-stone-500",
         },
         {
-          name: "Lebenslang",
+          name: "Lifetime",
           featured: false,
           price: { Monthly: "59,99 €", Annually: "59,99 €" },
           description:

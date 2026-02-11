@@ -1,5 +1,5 @@
 ---
-title: Spark Memos : le moyen le plus rapide de transformer une idée en contenu publiable
+title: "Spark Memos : le moyen le plus rapide de transformer une idée en contenu publiable"
 slug: spark-memos-momentum
 lang: fr
 date: 2025-02-10 00:00:00

@@ -1,4 +1,4 @@
-import { Inter } from "next/font/google";
+import { Fraunces, Manrope } from "next/font/google";
 import clsx from "clsx";
 
 import "../globals.css";
@@ -7,10 +7,16 @@ import { METADATA } from "@/constants/metadata";
 import { getDictionary, Language } from "@/dictionaries";
 import { Metadata } from "next";
 
-const inter = Inter({
+const manrope = Manrope({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-manrope",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-fraunces",
 });
 
 export async function generateMetadata({
@@ -65,7 +71,11 @@ export default async function RootLayout({
   return (
     <html
       lang={lang}
-      className={clsx("bg-stone-50 antialiased", inter.variable)}
+      className={clsx(
+        "bg-[#0d1017] text-stone-100 antialiased",
+        manrope.variable,
+        fraunces.variable
+      )}
     >
       <body>{children}</body>
     </html>

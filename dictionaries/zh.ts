@@ -129,7 +129,7 @@ const dictionary = {
       annuallyLabel: "按年",
       plans: [
         {
-          name: "试用版",
+          name: "Freemium",
           featured: false,
           price: { Monthly: "¥0", Annually: "¥0" },
           description: "你想立即体验这款应用。现在就免费开始使用吧。",
@@ -137,11 +137,11 @@ const dictionary = {
             label: "免费开始使用",
             href: METADATA.appStoreLink,
           },
-          features: ["最多3个集合", "无限备忘录"],
+          features: ["最多5个集合", "无限备忘录"],
           logomarkClassName: "fill-stone-300",
         },
         {
-          name: "完整订阅",
+          name: "Premium",
           featured: true,
           price: { Monthly: "¥15", Annually: "¥68" },
           description: "订阅应用以获得持续的更新和支持。",
@@ -149,11 +149,11 @@ const dictionary = {
             label: "订阅",
             href: METADATA.appStoreLink,
           },
-          features: ["所有试用版功能", "iCloud 同步", "无限集合", "主题自定义"],
+          features: ["所有 Freemium 功能", "iCloud 同步", "无限集合", "主题自定义"],
           logomarkClassName: "fill-stone-500",
         },
         {
-          name: "终身版",
+          name: "Lifetime",
           featured: false,
           price: { Monthly: "¥328", Annually: "¥328" },
           description: "一次购买，终身使用。获得所有功能和终身更新。",

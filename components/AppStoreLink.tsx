@@ -13,10 +13,10 @@ export function AppStoreLink({
       target="_blank"
       aria-label="Download on the App Store"
       className={clsx(
-        "rounded-lg transition-colors",
+        "rounded-2xl border px-2 py-1 transition hover:-translate-y-0.5",
         color === "black"
-          ? "bg-stone-800 text-white hover:bg-stone-900"
-          : "bg-white text-stone-900 hover:bg-stone-50"
+          ? "border-ink-200/25 bg-ink-900/80 text-white shadow-[0_16px_38px_rgba(9,13,21,0.42)] hover:border-ink-200/45 hover:bg-ink-900"
+          : "border-white/60 bg-white text-ink-900 shadow-[0_14px_34px_rgba(255,190,138,0.24)] hover:bg-ink-50"
       )}
     >
       <svg viewBox="0 0 120 40" aria-hidden="true" className="h-10">

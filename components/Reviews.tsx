@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
-import { useInView } from "framer-motion";
 
 import { Container } from "@/components/Container";
 import { Dictionary } from "@/dictionaries";
@@ -111,13 +109,13 @@ function StarIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 
 function StarRating({ rating }: { rating: Review["rating"] }) {
   return (
-    <div className="flex">
+    <div className="flex gap-1">
       {[...Array(5).keys()].map((index) => (
         <StarIcon
           key={index}
           className={clsx(
-            "h-5 w-5",
-            rating > index ? "fill-orange-500" : "fill-stone-300"
+            "h-4 w-4",
+            rating > index ? "fill-ember-400" : "fill-ink-400"
           )}
         />
       ))}
@@ -125,55 +123,29 @@ function StarRating({ rating }: { rating: Review["rating"] }) {
   );
 }
 
-function Review({
+function ReviewCard({
   title,
   body,
   author,
   rating,
   className,
-  ...props
-}: Omit<React.ComponentPropsWithoutRef<"figure">, keyof Review> & Review) {
-  let animationDelay = useMemo(() => {
-    let possibleAnimationDelays = [
-      "0s",
-      "0.1s",
-      "0.2s",
-      "0.3s",
-      "0.4s",
-      "0.5s",
-    ];
-    return possibleAnimationDelays[
-      Math.floor(Math.random() * possibleAnimationDelays.length)
-    ];
-  }, []);
-
+}: Review & { className?: string }) {
   return (
-    <figure
-      className={clsx(
-        "animate-fade-in rounded-3xl bg-white p-6 opacity-0 shadow-md shadow-stone-900/5",
-        className
-      )}
-      style={{ animationDelay }}
-      {...props}
-    >
-      <blockquote className="text-stone-900">
+    <figure className={clsx("glass-panel rounded-2xl p-5", className)}>
+      <blockquote className="text-ink-50">
         <StarRating rating={rating} />
-        <p className="mt-4 text-lg font-semibold leading-6 before:content-['“'] after:content-['”']">
-          {title}
-        </p>
-        <p className="mt-3 text-base leading-7">{body}</p>
+        <p className="mt-4 text-base font-semibold leading-6">{title}</p>
+        <p className="mt-3 text-sm leading-6 text-ink-100">{body}</p>
       </blockquote>
-      <figcaption className="mt-3 text-sm text-stone-600 before:content-['–_']">
-        {author}
-      </figcaption>
+      <figcaption className="mt-3 text-sm text-ink-200">{author}</figcaption>
     </figure>
   );
 }
 
 function splitArray<T>(array: Array<T>, numParts: number) {
-  let result: Array<Array<T>> = [];
-  for (let i = 0; i < array.length; i++) {
-    let index = i % numParts;
+  const result: Array<Array<T>> = [];
+  for (let i = 0; i < array.length; i += 1) {
+    const index = i % numParts;
     if (!result[index]) {
       result[index] = [];
     }
@@ -185,117 +157,61 @@ function splitArray<T>(array: Array<T>, numParts: number) {
 function ReviewColumn({
   reviews,
   className,
-  reviewClassName,
-  msPerPixel = 0,
+  durationSeconds,
 }: {
   reviews: Array<Review>;
   className?: string;
-  reviewClassName?: (reviewIndex: number) => string;
-  msPerPixel?: number;
+  durationSeconds: number;
 }) {
-  let columnRef = useRef<React.ElementRef<"div">>(null);
-  let [columnHeight, setColumnHeight] = useState(0);
-  let duration = `${columnHeight * msPerPixel}ms`;
-
-  useEffect(() => {
-    if (!columnRef.current) {
-      return;
-    }
-
-    let resizeObserver = new window.ResizeObserver(() => {
-      setColumnHeight(columnRef.current?.offsetHeight ?? 0);
-    });
-
-    resizeObserver.observe(columnRef.current);
-
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, []);
+  const duration = `${durationSeconds}s`;
 
   return (
     <div
-      ref={columnRef}
-      className={clsx("animate-marquee space-y-8 py-4", className)}
+      className={clsx("animate-marquee space-y-4 py-2", className)}
       style={{ "--marquee-duration": duration } as React.CSSProperties}
     >
-      {reviews.concat(reviews).map((review, reviewIndex) => (
-        <Review
-          key={reviewIndex}
-          aria-hidden={reviewIndex >= reviews.length}
-          className={reviewClassName?.(reviewIndex % reviews.length)}
+      {reviews.concat(reviews).map((review, index) => (
+        <ReviewCard
+          key={`${review.author}-${index}`}
           {...review}
+          className={index >= reviews.length ? "pointer-events-none" : undefined}
         />
       ))}
     </div>
   );
 }
 
-function ReviewGrid() {
-  let containerRef = useRef<React.ElementRef<"div">>(null);
-  let isInView = useInView(containerRef, { once: true, amount: 0.4 });
-  let columns = splitArray(reviews, 3);
-  let column1 = columns[0];
-  let column2 = columns[1];
-  let column3 = splitArray(columns[2], 2);
-
-  return (
-    <div
-      ref={containerRef}
-      className="relative -mx-4 mt-16 grid h-[49rem] max-h-[150vh] grid-cols-1 items-start gap-8 overflow-hidden px-4 sm:mt-20 md:grid-cols-2 lg:grid-cols-3"
-    >
-      {isInView && (
-        <>
-          <ReviewColumn
-            reviews={[...column1, ...column3.flat(), ...column2]}
-            reviewClassName={(reviewIndex) =>
-              clsx(
-                reviewIndex >= column1.length + column3[0].length &&
-                  "md:hidden",
-                reviewIndex >= column1.length && "lg:hidden"
-              )
-            }
-            msPerPixel={10}
-          />
-          <ReviewColumn
-            reviews={[...column2, ...column3[1]]}
-            className="hidden md:block"
-            reviewClassName={(reviewIndex) =>
-              reviewIndex >= column2.length ? "lg:hidden" : ""
-            }
-            msPerPixel={15}
-          />
-          <ReviewColumn
-            reviews={column3.flat()}
-            className="hidden lg:block"
-            msPerPixel={10}
-          />
-        </>
-      )}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-stone-50" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-stone-50" />
-    </div>
-  );
-}
-
 export function Reviews({ dict }: { dict: Dictionary }) {
+  const columns = splitArray(reviews, 3);
+
   return (
-    <section
-      id="reviews"
-      aria-labelledby="reviews-title"
-      className="pb-16 pt-20 sm:pb-24 sm:pt-32"
-    >
+    <section id="reviews" className="py-12 sm:py-20">
       <Container>
-        <h2
-          id="reviews-title"
-          className="text-3xl font-medium tracking-tight text-stone-900 sm:text-center"
-        >
-          {dict.homeSections.reviews.title}
-        </h2>
-        <p className="mt-2 text-lg text-stone-600 sm:text-center">
-          {dict.homeSections.reviews.description}
-        </p>
-        <ReviewGrid />
+        <div className="max-w-3xl">
+          <p className="inline-flex rounded-full border border-ink-200/40 bg-ink-200/10 px-4 py-1 text-xs font-semibold tracking-[0.18em] text-ink-100 uppercase">
+            {dict.labels.reviews}
+          </p>
+          <h2 className="text-display mt-4 text-balance text-3xl text-white sm:text-4xl">
+            {dict.homeSections.reviews.title}
+          </h2>
+          <p className="mt-3 text-lg text-ink-100">{dict.homeSections.reviews.description}</p>
+        </div>
+
+        <div className="relative mt-8 h-[44rem] max-h-[140vh] overflow-hidden rounded-3xl border border-ink-200/10">
+          <div className="grid h-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]">
+            <ReviewColumn reviews={columns[0] ?? []} durationSeconds={46} />
+            <ReviewColumn
+              reviews={columns[1] ?? []}
+              durationSeconds={54}
+              className="hidden md:block"
+            />
+            <ReviewColumn
+              reviews={columns[2] ?? []}
+              durationSeconds={42}
+              className="hidden xl:block"
+            />
+          </div>
+        </div>
       </Container>
     </section>
   );

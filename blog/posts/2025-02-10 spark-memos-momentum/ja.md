@@ -1,5 +1,5 @@
 ---
-title: Spark Memos：ひらめきを最速で「共有できる形」にする方法
+title: "Spark Memos：ひらめきを最速で「共有できる形」にする方法"
 slug: spark-memos-momentum
 lang: ja
 date: 2025-02-10 00:00:00

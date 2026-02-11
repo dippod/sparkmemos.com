@@ -1,5 +1,5 @@
 ---
-title: Spark Memos: der schnellste Weg, Funken in veröffentlichbare Ideen zu verwandeln
+title: "Spark Memos: der schnellste Weg, Funken in veröffentlichbare Ideen zu verwandeln"
 slug: spark-memos-momentum
 lang: de
 date: 2025-02-10 00:00:00

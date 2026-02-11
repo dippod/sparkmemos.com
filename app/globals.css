@@ -3,70 +3,178 @@
 /* Tailwind v4: enable the Typography plugin */
 @plugin "@tailwindcss/typography";
 
-/* Tailwind v4: migrate theme customizations from tailwind.config.ts */
 @theme inline {
-  /* Font family */
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-fraunces);
 
-  /* Type scale and line-heights */
-  --text-xs: 0.75rem;
-  --text-xs--line-height: 1rem;
-  --text-sm: 0.875rem;
-  --text-sm--line-height: 1.5rem;
-  --text-base: 1rem;
-  --text-base--line-height: 1.5rem;
-  --text-lg: 1.125rem;
-  --text-lg--line-height: 2rem;
-  --text-xl: 1.25rem;
-  --text-xl--line-height: 1.75rem;
-  --text-2xl: 1.5rem;
-  --text-2xl--line-height: 2rem;
-  /* Note: customized sizes vs. Tailwind defaults */
-  --text-3xl: 2rem;
-  --text-3xl--line-height: 3rem;
-  --text-4xl: 2.5rem;
-  --text-4xl--line-height: 3rem;
-  --text-5xl: 3rem;
-  --text-5xl--line-height: 1;
-  --text-6xl: 3.75rem;
-  --text-6xl--line-height: 1;
-  --text-7xl: 4.5rem;
-  --text-7xl--line-height: 1;
-  --text-8xl: 6rem;
-  --text-8xl--line-height: 1;
-  --text-9xl: 8rem;
-  --text-9xl--line-height: 1;
-
-  /* Border radius additions */
-  --radius-5xl: 2.5rem; /* rounded-5xl */
-
-  /* Max width override to match previous `max-w-2xl: 40rem` */
   --container-2xl: 40rem;
 
-  /* Animations */
-  --animate-fade-in: fade-in 0.5s linear forwards;
-  --animate-marquee: marquee var(--marquee-duration) linear infinite;
-  --animate-spin-slow: spin 4s linear infinite;
-  --animate-spin-slower: spin 6s linear infinite;
-  --animate-spin-reverse: spin-reverse 1s linear infinite;
-  --animate-spin-reverse-slow: spin-reverse 4s linear infinite;
-  --animate-spin-reverse-slower: spin-reverse 6s linear infinite;
+  --color-ink-50: #fff7ee;
+  --color-ink-100: #f8e8d8;
+  --color-ink-200: #e8cdb4;
+  --color-ink-300: #d6b190;
+  --color-ink-400: #c4926e;
+  --color-ink-500: #a97956;
+  --color-ink-600: #8f6245;
+  --color-ink-700: #6f4b37;
+  --color-ink-800: #4f3529;
+  --color-ink-900: #35241d;
+  --color-ink-950: #1f1410;
 
-  /* Keyframes for custom animations */
-  @keyframes fade-in {
-    from { opacity: 0 }
-    to { opacity: 1 }
+  --color-ember-200: #fdd1b2;
+  --color-ember-300: #feb07d;
+  --color-ember-400: #ff9153;
+  --color-ember-500: #ff6f2a;
+  --color-ember-600: #f14f10;
+
+  --animate-fade-in-up: fade-in-up 0.7s ease both;
+  --animate-marquee: marquee var(--marquee-duration) linear infinite;
+  --animate-float: float 8s ease-in-out infinite;
+  --animate-spin-slow: spin 26s linear infinite;
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
   @keyframes marquee {
-    100% { transform: translateY(-50%) }
+    100% {
+      transform: translateY(-50%);
+    }
   }
-  @keyframes spin-reverse {
-    to { transform: rotate(-360deg) }
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100vh;
+  background-color: #1f1410;
+  background-image:
+    radial-gradient(circle at 0% 0%, rgba(255, 128, 38, 0.3), transparent 36%),
+    radial-gradient(circle at 100% 0%, rgba(255, 191, 117, 0.2), transparent 44%),
+    radial-gradient(circle at 50% 100%, rgba(47, 27, 18, 0.95), transparent 58%);
+  color: #fff1e6;
+}
+
+a {
+  transition-property: color, border-color, background-color, opacity;
+  transition-duration: 180ms;
+}
+
+::selection {
+  background: rgba(255, 111, 42, 0.38);
+  color: #fff5ee;
+}
+
+@layer components {
+  .site-shell {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .site-shell::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(
+      to right,
+      rgba(255, 196, 153, 0.1) 1px,
+      transparent 1px
+    );
+    background-size: 64px 64px;
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.55) 16%,
+      rgba(0, 0, 0, 0.55) 84%,
+      transparent 100%
+    );
+    z-index: -2;
+  }
+
+  .site-shell::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(26, 14, 10, 0.6) 0%,
+      rgba(26, 14, 10, 0.22) 20%,
+      rgba(26, 14, 10, 0.2) 80%,
+      rgba(26, 14, 10, 0.72) 100%
+    );
+    z-index: -1;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .text-display {
+    font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  }
+
+  .glass-panel {
+    background: linear-gradient(
+      145deg,
+      rgba(72, 45, 31, 0.74),
+      rgba(44, 28, 20, 0.64)
+    );
+    border: 1px solid rgba(237, 194, 158, 0.22);
+    box-shadow: 0 24px 58px rgba(20, 10, 6, 0.42);
+    backdrop-filter: blur(18px);
+  }
+
+  .panel-stroke {
+    border: 1px solid rgba(234, 192, 151, 0.24);
+  }
+
+  .ink-gradient {
+    background: linear-gradient(
+      170deg,
+      rgba(65, 40, 27, 0.95) 0%,
+      rgba(37, 23, 16, 0.98) 55%
+    );
+  }
+
+  .prose {
+    --tw-prose-body: #f4deca;
+    --tw-prose-headings: #fff6ee;
+    --tw-prose-lead: #efcfb3;
+    --tw-prose-links: #ffd8bd;
+    --tw-prose-bold: #fff4ea;
+    --tw-prose-counters: #e8c6a8;
+    --tw-prose-bullets: #c6906c;
+    --tw-prose-hr: #5f3e2c;
+    --tw-prose-quotes: #fff1e3;
+    --tw-prose-quote-borders: #7a5138;
+    --tw-prose-captions: #d9aa85;
+    --tw-prose-code: #ffd8bd;
+    --tw-prose-pre-code: #ffe8d4;
+    --tw-prose-pre-bg: #2a1a13;
+    --tw-prose-th-borders: #6a4732;
+    --tw-prose-td-borders: #563728;
   }
 }
