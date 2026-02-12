@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { getDictionary, Language } from "@/dictionaries";
+import { defaultLanguage, getDictionary, isLanguage } from "@/dictionaries";
 import { getAlternateLanguages } from "@/lib/metadata";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: Language }>;
+  params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const locale = isLanguage(lang) ? lang : defaultLanguage;
+  const dict = await getDictionary(locale);
   return {
     alternates: {
       canonical: new URL(dict.urls.privacy, dict.baseUrl).href,

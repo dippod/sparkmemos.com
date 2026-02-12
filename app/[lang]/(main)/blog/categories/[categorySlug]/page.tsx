@@ -1,6 +1,6 @@
 import { posts, categories } from "@/.velite";
 import Link from "next/link";
-import { Language, getDictionary } from "@/dictionaries";
+import { defaultLanguage, getDictionary, isLanguage } from "@/dictionaries";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, CalendarDays } from "lucide-react";
@@ -9,10 +9,11 @@ import { getAlternateLanguages } from "@/lib/metadata";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: Language; categorySlug: string }>;
+  params: Promise<{ lang: string; categorySlug: string }>;
 }): Promise<Metadata> {
   const { lang, categorySlug } = await params;
-  const dictionary = await getDictionary(lang);
+  const locale = isLanguage(lang) ? lang : defaultLanguage;
+  const dictionary = await getDictionary(locale);
   const category = categories.find((category) => category.slug === categorySlug);
 
   if (!category) {
@@ -21,26 +22,26 @@ export async function generateMetadata({
 
   return {
     metadataBase: new URL(dictionary.baseUrl),
-    title: category.name[lang],
-    description: category.description?.[lang],
+    title: category.name[locale],
+    description: category.description?.[locale],
     keywords: dictionary.defaultKeywords,
     openGraph: {
       type: "website",
-      url: new URL(category.permalink[lang], dictionary.baseUrl).href,
-      title: category.name[lang],
-      description: category.description?.[lang],
+      url: new URL(category.permalink[locale], dictionary.baseUrl).href,
+      title: category.name[locale],
+      description: category.description?.[locale],
       siteName: dictionary.websiteName,
-      locale: lang,
+      locale,
       images: "/social-banner.png",
     },
     twitter: {
-      title: category.name[lang],
-      description: category.description?.[lang],
+      title: category.name[locale],
+      description: category.description?.[locale],
       site: "@noobnooc",
       card: "summary_large_image",
     },
     alternates: {
-      canonical: new URL(category.permalink[lang], dictionary.baseUrl).href,
+      canonical: new URL(category.permalink[locale], dictionary.baseUrl).href,
       languages: await getAlternateLanguages((dict, _lang) => category.permalink[_lang]),
     },
   };
@@ -59,19 +60,20 @@ export default async function CategoryPostsPage({
   params,
 }: {
   params: Promise<{
-    lang: Language;
+    lang: string;
     categorySlug: string;
   }>;
 }) {
   const { lang, categorySlug } = await params;
+  const locale = isLanguage(lang) ? lang : defaultLanguage;
   const category = categories.find((entry) => entry.slug === categorySlug);
 
   if (!category) {
     notFound();
   }
 
-  const publishedPosts = getPublishedPosts(lang, category.slug);
-  const dictionary = await getDictionary(lang);
+  const publishedPosts = getPublishedPosts(locale, category.slug);
+  const dictionary = await getDictionary(locale);
 
   return (
     <main className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-10">
@@ -83,8 +85,8 @@ export default async function CategoryPostsPage({
           <ArrowLeft className="h-4 w-4" />
           {dictionary.labels.blog}
         </Link>
-        <h1 className="text-display text-4xl text-white sm:text-5xl">{category.name[lang]}</h1>
-        <p className="mt-4 max-w-3xl text-lg text-ink-100">{category.description?.[lang]}</p>
+        <h1 className="text-display text-4xl text-white sm:text-5xl">{category.name[locale]}</h1>
+        <p className="mt-4 max-w-3xl text-lg text-ink-100">{category.description?.[locale]}</p>
       </section>
 
       <ul className="mt-8 space-y-4">
@@ -93,7 +95,7 @@ export default async function CategoryPostsPage({
             <div className="mb-3 flex items-center gap-2 text-xs text-ink-200">
               <CalendarDays className="h-4 w-4" />
               <time dateTime={post.date}>
-                {Intl.DateTimeFormat(lang, {
+                {Intl.DateTimeFormat(locale, {
                   dateStyle: "medium",
                 }).format(new Date(post.date))}
               </time>

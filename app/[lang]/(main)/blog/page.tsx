@@ -1,6 +1,6 @@
 import { posts, categories } from "@/.velite";
 import Link from "next/link";
-import { Language, getDictionary } from "@/dictionaries";
+import { defaultLanguage, getDictionary, isLanguage } from "@/dictionaries";
 import { Metadata } from "next";
 import { ArrowRight, CalendarDays } from "lucide-react";
 import { getAlternateLanguages } from "@/lib/metadata";
@@ -8,10 +8,11 @@ import { getAlternateLanguages } from "@/lib/metadata";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: Language }>;
+  params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const dictionary = await getDictionary(lang);
+  const locale = isLanguage(lang) ? lang : defaultLanguage;
+  const dictionary = await getDictionary(locale);
 
   return {
     metadataBase: new URL(dictionary.baseUrl),
@@ -24,7 +25,7 @@ export async function generateMetadata({
       title: dictionary.blog.title,
       description: dictionary.blog.description,
       siteName: dictionary.websiteName,
-      locale: lang,
+      locale,
       images: "/social-banner.png",
     },
     twitter: {
@@ -50,12 +51,13 @@ export default async function PostsPage({
   params,
 }: {
   params: Promise<{
-    lang: Language;
+    lang: string;
   }>;
 }) {
   const { lang } = await params;
-  const dictionary = await getDictionary(lang);
-  const publishedPosts = getPublishedPosts(lang);
+  const locale = isLanguage(lang) ? lang : defaultLanguage;
+  const dictionary = await getDictionary(locale);
+  const publishedPosts = getPublishedPosts(locale);
 
   return (
     <main className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-10">
@@ -76,7 +78,7 @@ export default async function PostsPage({
               <div className="mb-3 flex items-center gap-2 text-xs text-ink-200">
                 <CalendarDays className="h-4 w-4" />
                 <time dateTime={post.date}>
-                  {Intl.DateTimeFormat(lang, {
+                  {Intl.DateTimeFormat(locale, {
                     dateStyle: "medium",
                   }).format(new Date(post.date))}
                 </time>
@@ -100,11 +102,11 @@ export default async function PostsPage({
             {categories.map((category) => (
               <li key={category.slug}>
                 <Link
-                  href={category.permalink[lang]}
+                  href={category.permalink[locale]}
                   className="flex items-center justify-between rounded-2xl border border-transparent px-3 py-2 text-sm text-ink-100 hover:border-ink-200/35 hover:bg-ink-200/10 hover:text-white"
                 >
-                  <span>{category.name[lang]}</span>
-                  <span className="text-xs text-ink-300">{category.count[lang]}</span>
+                  <span>{category.name[locale]}</span>
+                  <span className="text-xs text-ink-300">{category.count[locale]}</span>
                 </Link>
               </li>
             ))}

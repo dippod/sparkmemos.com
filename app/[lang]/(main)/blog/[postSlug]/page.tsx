@@ -1,7 +1,7 @@
 import { posts } from "@/.velite";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getDictionary, Language, languageLabels } from "@/dictionaries";
+import { defaultLanguage, getDictionary, isLanguage, languageLabels } from "@/dictionaries";
 import { Metadata } from "next";
 import clsx from "clsx";
 import { ArrowLeft, CalendarDays, Languages } from "lucide-react";
@@ -10,12 +10,13 @@ import Script from "next/script";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: Language; postSlug: string }>;
+  params: Promise<{ lang: string; postSlug: string }>;
 }): Promise<Metadata> {
   const { lang, postSlug } = await params;
-  const dictionary = await getDictionary(lang);
+  const locale = isLanguage(lang) ? lang : defaultLanguage;
+  const dictionary = await getDictionary(locale);
 
-  const post = posts.find((post) => post.lang === lang && post.slug === postSlug);
+  const post = posts.find((post) => post.lang === locale && post.slug === postSlug);
 
   if (!post) {
     notFound();
@@ -34,7 +35,7 @@ export async function generateMetadata({
       title: post.title,
       description: post.description || post.title,
       siteName: dictionary.websiteName,
-      locale: lang,
+      locale,
       images: post.cover?.src ?? "/social-banner.png",
     },
     twitter: {
@@ -59,15 +60,16 @@ export async function generateMetadata({
 export default async function PostPage({
   params,
 }: {
-  params: Promise<{ lang: Language; postSlug: string }>;
+  params: Promise<{ lang: string; postSlug: string }>;
 }) {
   const { lang, postSlug } = await params;
-  const dictionary = await getDictionary(lang);
+  const locale = isLanguage(lang) ? lang : defaultLanguage;
+  const dictionary = await getDictionary(locale);
 
-  const post = posts.find((entry) => entry.lang === lang && entry.slug === postSlug);
+  const post = posts.find((entry) => entry.lang === locale && entry.slug === postSlug);
 
   const otherLanguages = posts.filter(
-    (entry) => entry.slug === postSlug && entry.lang !== lang
+    (entry) => entry.slug === postSlug && entry.lang !== locale
   );
 
   if (!post) {
@@ -84,7 +86,7 @@ export default async function PostPage({
           description: post.description || post.title,
           datePublished: post.date,
           dateModified: post.updated || post.date,
-          inLanguage: lang,
+          inLanguage: locale,
           image: post.cover?.src
             ? new URL(post.cover.src, dictionary.baseUrl).href
             : new URL("/social-banner.png", dictionary.baseUrl).href,
@@ -113,7 +115,7 @@ export default async function PostPage({
           <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-ink-100">
             <span className="inline-flex items-center gap-2 rounded-full border border-ink-200/35 px-3 py-1.5 font-medium">
               <CalendarDays className="h-4 w-4" />
-              {Intl.DateTimeFormat(lang, {
+              {Intl.DateTimeFormat(locale, {
                 dateStyle: "medium",
               }).format(new Date(post.date))}
             </span>

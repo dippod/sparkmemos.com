@@ -1,16 +1,17 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { getDictionary, Language } from "@/dictionaries";
+import { defaultLanguage, getDictionary, isLanguage } from "@/dictionaries";
 
 export default async function Layout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ lang: Language }>;
+  params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const locale = isLanguage(lang) ? lang : defaultLanguage;
+  const dict = await getDictionary(locale);
 
   return (
     <div className="site-shell flex min-h-screen flex-col">

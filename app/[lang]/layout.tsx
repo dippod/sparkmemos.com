@@ -4,7 +4,7 @@ import clsx from "clsx";
 import "../globals.css";
 import { getAlternateLanguages } from "@/lib/metadata";
 import { METADATA } from "@/constants/metadata";
-import { getDictionary, Language } from "@/dictionaries";
+import { defaultLanguage, getDictionary, isLanguage } from "@/dictionaries";
 import { Metadata } from "next";
 
 const manrope = Manrope({
@@ -37,10 +37,11 @@ const themeScript = `(() => {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: Language }>;
+  params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const locale = isLanguage(lang) ? lang : defaultLanguage;
+  const dict = await getDictionary(locale);
 
   return {
     metadataBase: new URL(dict.baseUrl),
@@ -59,7 +60,7 @@ export async function generateMetadata({
       title: dict.websiteName,
       description: dict.defaultDescription,
       siteName: dict.websiteName,
-      locale: lang,
+      locale,
       images: "/social-banner.png",
     },
     twitter: {
@@ -83,9 +84,10 @@ export default async function RootLayout({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
+  const locale = isLanguage(lang) ? lang : defaultLanguage;
   return (
     <html
-      lang={lang}
+      lang={locale}
       suppressHydrationWarning
       className={clsx(
         "bg-[#120b08] text-ink-100 antialiased",

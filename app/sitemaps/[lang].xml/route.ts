@@ -8,11 +8,17 @@ function xhtmlLink(rel: "alternate", href: string, hrefLang: string) {
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: Promise<{ lang: Language }> }
+  { params }: { params: Promise<{ lang?: string | string[] }> }
 ) {
   const { lang } = await params;
+  const resolvedLang = Array.isArray(lang) ? lang[0] : lang;
+  if (!resolvedLang || !dictionaryKeys.includes(resolvedLang as Language)) {
+    return new Response("Not found", { status: 404 });
+  }
+
+  const locale = resolvedLang as Language;
   const dicts = await Promise.all(dictionaryKeys.map(getDictionary));
-  const current = dicts.find((d) => d.urls.home.startsWith(`/${lang}`));
+  const current = dicts.find((d) => d.urls.home.startsWith(`/${locale}`));
   if (!current) return new Response("Not found", { status: 404 });
 
   const allLocales = dicts.map((d) => ({
@@ -77,7 +83,7 @@ export async function GET(
 
   // Posts for the current lang, with alternates
   posts
-    .filter((p) => !p.draft && p.lang === lang)
+    .filter((p) => !p.draft && p.lang === locale)
     .forEach((p) => {
       const group = posts.filter((i) => i.slug === p.slug);
       const map = Object.fromEntries(
@@ -103,7 +109,7 @@ export async function GET(
     ) as Record<string, string>;
     pages.push(
       `\n  <url>\n    <loc>${
-        new URL(c.permalink[lang as keyof typeof c.permalink], current.baseUrl)
+        new URL(c.permalink[locale as keyof typeof c.permalink], current.baseUrl)
           .href
       }</loc>${altFor(
         map

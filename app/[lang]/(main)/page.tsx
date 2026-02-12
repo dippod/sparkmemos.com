@@ -5,17 +5,18 @@ import { Pricing } from "@/components/Pricing";
 import { PrimaryFeatures } from "@/components/PrimaryFeatures";
 import { Reviews } from "@/components/Reviews";
 import { SecondaryFeatures } from "@/components/SecondaryFeatures";
-import { getDictionary, Language } from "@/dictionaries";
+import { defaultLanguage, getDictionary, isLanguage } from "@/dictionaries";
 import type { Metadata } from "next";
 import { getAlternateLanguages } from "@/lib/metadata";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: Language }>;
+  params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const locale = isLanguage(lang) ? lang : defaultLanguage;
+  const dict = await getDictionary(locale);
 
   return {
     alternates: {
@@ -28,10 +29,11 @@ export async function generateMetadata({
 export default async function Home({
   params,
 }: {
-  params: Promise<{ lang: Language }>;
+  params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const locale = isLanguage(lang) ? lang : defaultLanguage;
+  const dict = await getDictionary(locale);
 
   return (
     <div className="space-y-1 pb-2">
