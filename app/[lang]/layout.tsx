@@ -3,6 +3,7 @@ import clsx from "clsx";
 
 import "../globals.css";
 import { getAlternateLanguages } from "@/lib/metadata";
+import { getAbsoluteUrl, getOgAlternateLocales, getOgLocale } from "@/lib/seo";
 import { METADATA } from "@/constants/metadata";
 import { defaultLanguage, getDictionary, isLanguage } from "@/dictionaries";
 import { Metadata } from "next";
@@ -45,33 +46,63 @@ export async function generateMetadata({
 
   return {
     metadataBase: new URL(dict.baseUrl),
+    applicationName: METADATA.brandName,
     title: {
       template: dict.titleTemplate,
       default: dict.defaultTitle,
     },
     description: dict.defaultDescription,
     keywords: dict.defaultKeywords,
+    creator: METADATA.creatorName,
+    publisher: METADATA.brandName,
+    authors: [{ name: METADATA.creatorName, url: METADATA.sameAs[0] }],
+    referrer: "origin-when-cross-origin",
+    category: "productivity",
+    robots: {
+      index: true,
+      follow: true,
+      nocache: false,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     itunes: {
       appId: METADATA.appId,
     },
     openGraph: {
       type: "website",
-      url: new URL(dict.urls.home, dict.baseUrl).href,
+      url: getAbsoluteUrl(dict.urls.home, dict.baseUrl),
       title: dict.websiteName,
       description: dict.defaultDescription,
       siteName: dict.websiteName,
-      locale,
-      images: "/social-banner.png",
+      locale: getOgLocale(locale),
+      alternateLocale: getOgAlternateLocales(locale),
+      images: [
+        {
+          url: METADATA.socialBannerPath,
+          width: 1200,
+          height: 630,
+          alt: dict.defaultTitle,
+        },
+      ],
     },
     twitter: {
       title: dict.websiteName,
       description: dict.defaultDescription,
-      site: "@WeeloneHQ",
+      site: METADATA.twitterHandle,
+      creator: METADATA.twitterHandle,
       card: "summary_large_image",
-      images: "/social-banner.png",
+      images: [METADATA.socialBannerPath],
     },
     alternates: {
       languages: await getAlternateLanguages((dict) => dict.urls.home),
+    },
+    other: {
+      "apple-itunes-app": `app-id=${METADATA.appId}, app-argument=${METADATA.appStoreLink}`,
     },
   };
 }

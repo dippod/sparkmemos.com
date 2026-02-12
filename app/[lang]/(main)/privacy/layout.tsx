@@ -11,6 +11,12 @@ export async function generateMetadata({
   const locale = isLanguage(lang) ? lang : defaultLanguage;
   const dict = await getDictionary(locale);
   return {
+    title: dict.labels.privacyPolicy,
+    description: dict.labels.privacyPolicy,
+    robots: {
+      index: true,
+      follow: true,
+    },
     alternates: {
       canonical: new URL(dict.urls.privacy, dict.baseUrl).href,
       languages: await getAlternateLanguages((d) => d.urls.privacy),

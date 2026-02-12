@@ -1,10 +1,18 @@
 import { posts, categories } from "@/.velite";
 import Link from "next/link";
+import Script from "next/script";
 import { defaultLanguage, getDictionary, isLanguage } from "@/dictionaries";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 import { getAlternateLanguages } from "@/lib/metadata";
+import { METADATA } from "@/constants/metadata";
+import {
+  getAbsoluteUrl,
+  getLanguageTag,
+  getOgAlternateLocales,
+  getOgLocale,
+} from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -19,29 +27,46 @@ export async function generateMetadata({
   if (!category) {
     notFound();
   }
+  const categoryUrl = getAbsoluteUrl(category.permalink[locale], dictionary.baseUrl);
+  const categoryName = category.name[locale];
+  const categoryDescription = category.description?.[locale] || dictionary.blog.description;
 
   return {
     metadataBase: new URL(dictionary.baseUrl),
-    title: category.name[locale],
-    description: category.description?.[locale],
-    keywords: dictionary.defaultKeywords,
+    title: categoryName,
+    description: categoryDescription,
+    keywords: [...dictionary.defaultKeywords, categoryName],
+    robots: {
+      index: true,
+      follow: true,
+    },
     openGraph: {
       type: "website",
-      url: new URL(category.permalink[locale], dictionary.baseUrl).href,
-      title: category.name[locale],
-      description: category.description?.[locale],
+      url: categoryUrl,
+      title: categoryName,
+      description: categoryDescription,
       siteName: dictionary.websiteName,
-      locale,
-      images: "/social-banner.png",
+      locale: getOgLocale(locale),
+      alternateLocale: getOgAlternateLocales(locale),
+      images: [
+        {
+          url: METADATA.socialBannerPath,
+          width: 1200,
+          height: 630,
+          alt: categoryName,
+        },
+      ],
     },
     twitter: {
-      title: category.name[locale],
-      description: category.description?.[locale],
-      site: "@noobnooc",
+      title: categoryName,
+      description: categoryDescription,
+      site: METADATA.twitterHandle,
+      creator: METADATA.twitterHandle,
       card: "summary_large_image",
+      images: [METADATA.socialBannerPath],
     },
     alternates: {
-      canonical: new URL(category.permalink[locale], dictionary.baseUrl).href,
+      canonical: categoryUrl,
       languages: await getAlternateLanguages((dict, _lang) => category.permalink[_lang]),
     },
   };
@@ -74,9 +99,68 @@ export default async function CategoryPostsPage({
 
   const publishedPosts = getPublishedPosts(locale, category.slug);
   const dictionary = await getDictionary(locale);
+  const homeUrl = getAbsoluteUrl(dictionary.urls.home, dictionary.baseUrl);
+  const blogUrl = getAbsoluteUrl(dictionary.urls.blog, dictionary.baseUrl);
+  const categoryUrl = getAbsoluteUrl(category.permalink[locale], dictionary.baseUrl);
+  const languageTag = getLanguageTag(locale);
 
   return (
     <main className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-10">
+      <Script id={`blog-category-jsonld-${locale}-${category.slug}`} type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "CollectionPage",
+              "@id": `${categoryUrl}#category`,
+              name: category.name[locale],
+              description: category.description?.[locale] || dictionary.blog.description,
+              url: categoryUrl,
+              inLanguage: languageTag,
+              isPartOf: {
+                "@type": "Blog",
+                "@id": `${blogUrl}#blog`,
+                name: dictionary.blog.title,
+                url: blogUrl,
+              },
+            },
+            {
+              "@type": "ItemList",
+              "@id": `${categoryUrl}#post-list`,
+              itemListElement: publishedPosts.map((post, index) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                name: post.title,
+                url: getAbsoluteUrl(post.permalink, dictionary.baseUrl),
+              })),
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": `${categoryUrl}#breadcrumb`,
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: dictionary.websiteName,
+                  item: homeUrl,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: dictionary.labels.blog,
+                  item: blogUrl,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: category.name[locale],
+                  item: categoryUrl,
+                },
+              ],
+            },
+          ],
+        })}
+      </Script>
       <section className="glass-panel rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
         <Link
           href={dictionary.urls.blog}

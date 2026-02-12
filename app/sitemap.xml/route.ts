@@ -1,15 +1,18 @@
 import { dictionaryKeys, getDictionary } from "@/dictionaries";
+import { getLatestContentDateIso } from "@/lib/seo";
 
 export async function GET() {
-  const dicts = await Promise.all(dictionaryKeys.map(getDictionary));
+  const locales = await Promise.all(
+    dictionaryKeys.map(async (lang) => ({
+      lang,
+      dictionary: await getDictionary(lang),
+    }))
+  );
 
-  const items = dicts
-    .map((d) => {
-      const loc = new URL(
-        `/sitemaps/${d.urls.home.split("/")[1]}.xml`,
-        d.baseUrl
-      ).href;
-      const lastmod = new Date().toISOString();
+  const items = locales
+    .map(({ lang, dictionary }) => {
+      const loc = new URL(`/sitemaps/${lang}.xml`, dictionary.baseUrl).href;
+      const lastmod = getLatestContentDateIso(lang);
       return `\n  <sitemap>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`;
     })
     .join("\n");

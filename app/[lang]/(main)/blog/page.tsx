@@ -1,9 +1,17 @@
 import { posts, categories } from "@/.velite";
 import Link from "next/link";
+import Script from "next/script";
 import { defaultLanguage, getDictionary, isLanguage } from "@/dictionaries";
 import { Metadata } from "next";
 import { ArrowRight, CalendarDays } from "lucide-react";
 import { getAlternateLanguages } from "@/lib/metadata";
+import { METADATA } from "@/constants/metadata";
+import {
+  getAbsoluteUrl,
+  getLanguageTag,
+  getOgAlternateLocales,
+  getOgLocale,
+} from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -13,29 +21,44 @@ export async function generateMetadata({
   const { lang } = await params;
   const locale = isLanguage(lang) ? lang : defaultLanguage;
   const dictionary = await getDictionary(locale);
+  const blogUrl = getAbsoluteUrl(dictionary.urls.blog, dictionary.baseUrl);
 
   return {
     metadataBase: new URL(dictionary.baseUrl),
     title: dictionary.blog.title,
     description: dictionary.blog.description,
-    keywords: dictionary.defaultKeywords,
+    keywords: [...dictionary.defaultKeywords, dictionary.blog.title],
+    robots: {
+      index: true,
+      follow: true,
+    },
     openGraph: {
       type: "website",
-      url: new URL(dictionary.urls.blog, dictionary.baseUrl).href,
+      url: blogUrl,
       title: dictionary.blog.title,
       description: dictionary.blog.description,
       siteName: dictionary.websiteName,
-      locale,
-      images: "/social-banner.png",
+      locale: getOgLocale(locale),
+      alternateLocale: getOgAlternateLocales(locale),
+      images: [
+        {
+          url: METADATA.socialBannerPath,
+          width: 1200,
+          height: 630,
+          alt: dictionary.blog.title,
+        },
+      ],
     },
     twitter: {
       title: dictionary.blog.title,
       description: dictionary.blog.description,
-      site: "@noobnooc",
+      site: METADATA.twitterHandle,
+      creator: METADATA.twitterHandle,
       card: "summary_large_image",
+      images: [METADATA.socialBannerPath],
     },
     alternates: {
-      canonical: new URL(dictionary.urls.blog, dictionary.baseUrl).href,
+      canonical: blogUrl,
       languages: await getAlternateLanguages((dict) => dict.urls.blog),
     },
   };
@@ -58,9 +81,68 @@ export default async function PostsPage({
   const locale = isLanguage(lang) ? lang : defaultLanguage;
   const dictionary = await getDictionary(locale);
   const publishedPosts = getPublishedPosts(locale);
+  const homeUrl = getAbsoluteUrl(dictionary.urls.home, dictionary.baseUrl);
+  const blogUrl = getAbsoluteUrl(dictionary.urls.blog, dictionary.baseUrl);
+  const languageTag = getLanguageTag(locale);
 
   return (
     <main className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-10">
+      <Script id={`blog-jsonld-${locale}`} type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Blog",
+              "@id": `${blogUrl}#blog`,
+              name: dictionary.blog.title,
+              description: dictionary.blog.description,
+              url: blogUrl,
+              inLanguage: languageTag,
+              publisher: {
+                "@type": "Organization",
+                name: dictionary.websiteName,
+                url: homeUrl,
+              },
+              blogPost: publishedPosts.slice(0, 12).map((post) => ({
+                "@type": "BlogPosting",
+                headline: post.title,
+                url: getAbsoluteUrl(post.permalink, dictionary.baseUrl),
+                datePublished: post.date,
+                dateModified: post.updated || post.date,
+                description: post.description || post.title,
+              })),
+            },
+            {
+              "@type": "ItemList",
+              "@id": `${blogUrl}#post-list`,
+              itemListElement: publishedPosts.map((post, index) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                name: post.title,
+                url: getAbsoluteUrl(post.permalink, dictionary.baseUrl),
+              })),
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": `${blogUrl}#breadcrumb`,
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: dictionary.websiteName,
+                  item: homeUrl,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: dictionary.labels.blog,
+                  item: blogUrl,
+                },
+              ],
+            },
+          ],
+        })}
+      </Script>
       <div className="py-8 sm:py-12">
         <p className="inline-flex rounded-full border border-ember-300/45 bg-ember-500/15 px-4 py-1 text-xs font-semibold tracking-[0.18em] text-ember-200 uppercase">
           {dictionary.labels.blog}

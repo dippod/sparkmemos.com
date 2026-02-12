@@ -1,6 +1,12 @@
 import { NextRequest } from "next/server";
 import { posts, categories } from "@/.velite";
-import { Language, dictionaryKeys, getDictionary } from "@/dictionaries";
+import {
+  Language,
+  defaultLanguage,
+  dictionaryKeys,
+  getDictionary,
+} from "@/dictionaries";
+import { getCategoryLastmodIso, getLatestContentDateIso } from "@/lib/seo";
 
 function xhtmlLink(rel: "alternate", href: string, hrefLang: string) {
   return `\n    <xhtml:link rel="${rel}" hreflang="${hrefLang}" href="${href}" />`;
@@ -17,25 +23,51 @@ export async function GET(
   }
 
   const locale = resolvedLang as Language;
-  const dicts = await Promise.all(dictionaryKeys.map(getDictionary));
-  const current = dicts.find((d) => d.urls.home.startsWith(`/${locale}`));
+  const dictionaries = await Promise.all(
+    dictionaryKeys.map(async (lang) => ({
+      lang,
+      dictionary: await getDictionary(lang),
+    }))
+  );
+  const currentEntry = dictionaries.find((entry) => entry.lang === locale);
+  const current = currentEntry?.dictionary;
   if (!current) return new Response("Not found", { status: 404 });
 
-  const allLocales = dicts.map((d) => ({
-    lang: d.urls.home.split("/")[1],
-    baseUrl: d.baseUrl,
-    urls: d.urls,
+  const allLocales = dictionaries.map(({ lang, dictionary }) => ({
+    lang,
+    baseUrl: dictionary.baseUrl,
+    urls: dictionary.urls,
   }));
+  const defaultLocaleEntry = allLocales.find((entry) => entry.lang === defaultLanguage);
+  const localeLastmod = getLatestContentDateIso(locale);
 
   const urlsetOpen = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">`;
   const urlsetClose = `\n</urlset>`;
 
-  const altFor = (paths: Record<string, string>) =>
-    allLocales
-      .map(({ lang, baseUrl }) =>
-        xhtmlLink("alternate", new URL(paths[lang], baseUrl).href, lang)
-      )
+  const altFor = (paths: Record<string, string>) => {
+    const links = allLocales
+      .map(({ lang, baseUrl }) => {
+        const path = paths[lang];
+
+        if (!path) {
+          return "";
+        }
+
+        return xhtmlLink("alternate", new URL(path, baseUrl).href, lang);
+      })
       .join("");
+    const defaultPath = paths[defaultLanguage];
+
+    if (!defaultLocaleEntry || !defaultPath) {
+      return links;
+    }
+
+    return `${links}${xhtmlLink(
+      "alternate",
+      new URL(defaultPath, defaultLocaleEntry.baseUrl).href,
+      "x-default"
+    )}`;
+  };
 
   const pages = [] as string[];
 
@@ -47,7 +79,7 @@ export async function GET(
       Object.fromEntries(
         allLocales.map(({ lang, urls }) => [lang, urls.home])
       ) as Record<string, string>
-    )}\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>`
+    )}\n    <lastmod>${localeLastmod}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>`
   );
 
   // Blog index
@@ -58,7 +90,7 @@ export async function GET(
       Object.fromEntries(
         allLocales.map(({ lang, urls }) => [lang, urls.blog])
       ) as Record<string, string>
-    )}\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>`
+    )}\n    <lastmod>${localeLastmod}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>`
   );
 
   // Terms & Privacy
@@ -69,7 +101,7 @@ export async function GET(
       Object.fromEntries(
         allLocales.map(({ lang, urls }) => [lang, urls.terms])
       ) as Record<string, string>
-    )}\n    <changefreq>yearly</changefreq>\n    <priority>0.4</priority>\n  </url>`
+    )}\n    <lastmod>${localeLastmod}</lastmod>\n    <changefreq>yearly</changefreq>\n    <priority>0.4</priority>\n  </url>`
   );
   pages.push(
     `\n  <url>\n    <loc>${
@@ -78,7 +110,7 @@ export async function GET(
       Object.fromEntries(
         allLocales.map(({ lang, urls }) => [lang, urls.privacy])
       ) as Record<string, string>
-    )}\n    <changefreq>yearly</changefreq>\n    <priority>0.4</priority>\n  </url>`
+    )}\n    <lastmod>${localeLastmod}</lastmod>\n    <changefreq>yearly</changefreq>\n    <priority>0.4</priority>\n  </url>`
   );
 
   // Posts for the current lang, with alternates
@@ -101,19 +133,26 @@ export async function GET(
 
   // Categories for the current lang, with alternates
   categories.forEach((c) => {
+    const localeCountKey = locale as keyof typeof c.count;
+
+    if (c.count[localeCountKey] === 0) {
+      return;
+    }
+
     const map = Object.fromEntries(
       allLocales.map(({ lang }) => {
         const key = lang as keyof typeof c.permalink;
         return [lang, c.permalink[key]] as const;
       })
     ) as Record<string, string>;
+    const localePathKey = locale as keyof typeof c.permalink;
+    const lastmod = getCategoryLastmodIso(locale, c.slug);
     pages.push(
       `\n  <url>\n    <loc>${
-        new URL(c.permalink[locale as keyof typeof c.permalink], current.baseUrl)
-          .href
+        new URL(c.permalink[localePathKey], current.baseUrl).href
       }</loc>${altFor(
         map
-      )}\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>`
+      )}\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>`
     );
   });
 

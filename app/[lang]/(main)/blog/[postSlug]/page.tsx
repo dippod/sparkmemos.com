@@ -6,6 +6,13 @@ import { Metadata } from "next";
 import clsx from "clsx";
 import { ArrowLeft, CalendarDays, Languages } from "lucide-react";
 import Script from "next/script";
+import { METADATA } from "@/constants/metadata";
+import {
+  getAbsoluteUrl,
+  getLanguageTag,
+  getOgAlternateLocales,
+  getOgLocale,
+} from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -23,36 +30,66 @@ export async function generateMetadata({
   }
 
   const allLanguages = posts.filter((entry) => entry.slug === postSlug);
+  const postUrl = getAbsoluteUrl(post.permalink, dictionary.baseUrl);
+  const postImage = post.cover?.src ?? METADATA.socialBannerPath;
+  const languageAlternates = Object.fromEntries(
+    allLanguages.map((entry) => [
+      entry.lang,
+      getAbsoluteUrl(entry.permalink, dictionary.baseUrl),
+    ])
+  ) as Record<string, string>;
+  const defaultEntry = allLanguages.find((entry) => entry.lang === defaultLanguage);
+
+  if (defaultEntry) {
+    languageAlternates["x-default"] = getAbsoluteUrl(
+      defaultEntry.permalink,
+      dictionary.baseUrl
+    );
+  }
 
   return {
     metadataBase: new URL(dictionary.baseUrl),
     title: post.title,
     description: post.description || post.title,
-    keywords: dictionary.defaultKeywords,
+    keywords: [...dictionary.defaultKeywords, ...(post.keywords || [])],
+    authors: [{ name: METADATA.creatorName, url: METADATA.sameAs[0] }],
+    robots: {
+      index: true,
+      follow: true,
+    },
     openGraph: {
       type: "article",
-      url: new URL(post.permalink, dictionary.baseUrl).href,
+      url: postUrl,
       title: post.title,
       description: post.description || post.title,
       siteName: dictionary.websiteName,
-      locale,
-      images: post.cover?.src ?? "/social-banner.png",
+      locale: getOgLocale(locale),
+      alternateLocale: getOgAlternateLocales(locale),
+      publishedTime: post.date,
+      modifiedTime: post.updated || post.date,
+      authors: [METADATA.creatorName],
+      section: post.categories[0],
+      tags: post.tags,
+      images: [
+        {
+          url: postImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
     },
     twitter: {
       title: post.title,
       description: post.description || post.title,
-      site: "@noobnooc",
+      site: METADATA.twitterHandle,
+      creator: METADATA.twitterHandle,
       card: "summary_large_image",
-      images: "/social-banner.png",
+      images: [postImage],
     },
     alternates: {
-      canonical: new URL(post.permalink, dictionary.baseUrl).href,
-      languages: Object.fromEntries(
-        allLanguages.map((entry) => [
-          entry.lang,
-          new URL(entry.permalink, dictionary.baseUrl).href,
-        ])
-      ),
+      canonical: postUrl,
+      languages: languageAlternates,
     },
   };
 }
@@ -75,27 +112,79 @@ export default async function PostPage({
   if (!post) {
     notFound();
   }
+  const homeUrl = getAbsoluteUrl(dictionary.urls.home, dictionary.baseUrl);
+  const blogUrl = getAbsoluteUrl(dictionary.urls.blog, dictionary.baseUrl);
+  const postUrl = getAbsoluteUrl(post.permalink, dictionary.baseUrl);
+  const articleImageUrl = getAbsoluteUrl(
+    post.cover?.src ?? METADATA.socialBannerPath,
+    dictionary.baseUrl
+  );
+  const languageTag = getLanguageTag(locale);
 
   return (
     <main className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-10">
-      <Script id="ld-json" type="application/ld+json">
+      <Script id={`blog-post-jsonld-${locale}-${post.slug}`} type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "BlogPosting",
-          headline: post.title,
-          description: post.description || post.title,
-          datePublished: post.date,
-          dateModified: post.updated || post.date,
-          inLanguage: locale,
-          image: post.cover?.src
-            ? new URL(post.cover.src, dictionary.baseUrl).href
-            : new URL("/social-banner.png", dictionary.baseUrl).href,
-          mainEntityOfPage: new URL(post.permalink, dictionary.baseUrl).href,
-          publisher: {
-            "@type": "Organization",
-            name: dictionary.websiteName,
-            url: dictionary.baseUrl,
-          },
+          "@graph": [
+            {
+              "@type": "BlogPosting",
+              "@id": `${postUrl}#article`,
+              headline: post.title,
+              description: post.description || post.title,
+              datePublished: post.date,
+              dateModified: post.updated || post.date,
+              inLanguage: languageTag,
+              image: [articleImageUrl],
+              mainEntityOfPage: postUrl,
+              articleSection: post.categories,
+              keywords: post.keywords?.join(", "),
+              author: {
+                "@type": "Person",
+                name: METADATA.creatorName,
+                sameAs: METADATA.sameAs[0],
+              },
+              publisher: {
+                "@type": "Organization",
+                name: dictionary.websiteName,
+                url: homeUrl,
+                logo: {
+                  "@type": "ImageObject",
+                  url: getAbsoluteUrl(METADATA.logoPath, dictionary.baseUrl),
+                },
+              },
+              isPartOf: {
+                "@type": "Blog",
+                "@id": `${blogUrl}#blog`,
+                name: dictionary.blog.title,
+                url: blogUrl,
+              },
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": `${postUrl}#breadcrumb`,
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: dictionary.websiteName,
+                  item: homeUrl,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: dictionary.labels.blog,
+                  item: blogUrl,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: post.title,
+                  item: postUrl,
+                },
+              ],
+            },
+          ],
         })}
       </Script>
 
