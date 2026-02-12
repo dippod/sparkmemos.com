@@ -58,13 +58,13 @@ function Plan({
   return (
     <article
       className={clsx(
-        "pricing-card relative z-10 flex h-full flex-col overflow-hidden rounded-3xl p-6 sm:p-7",
+        "pricing-card relative z-10 flex h-full flex-col overflow-hidden rounded-[2.5rem] p-7 sm:p-8",
         featured && "pricing-card-featured pricing-card-featured-boost"
       )}
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <Logomark className={clsx("pricing-plan-mark h-10 w-10 rounded-xl", logomarkClassName)} />
+          <Logomark className={clsx("pricing-plan-mark h-10 w-10 rounded-2xl", logomarkClassName)} />
           <h3 className="text-2xl font-semibold text-white">{name}</h3>
         </div>
         {featured ? (

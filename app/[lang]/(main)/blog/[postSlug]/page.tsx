@@ -98,7 +98,7 @@ export default async function PostPage({
       </Script>
 
       <article className="mx-auto max-w-4xl">
-        <header className="glass-panel rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
+        <header className="py-8 sm:py-12">
           <Link
             href={dictionary.urls.blog}
             className="mb-5 inline-flex items-center gap-2 text-sm text-ink-100 hover:text-white"
@@ -111,7 +111,7 @@ export default async function PostPage({
           </h1>
 
           <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-ink-100">
-            <span className="inline-flex items-center gap-2 rounded-full border border-ink-200/35 px-3 py-1.5">
+            <span className="inline-flex items-center gap-2 rounded-full border border-ink-200/35 px-3 py-1.5 font-medium">
               <CalendarDays className="h-4 w-4" />
               {Intl.DateTimeFormat(lang, {
                 dateStyle: "medium",
@@ -119,7 +119,7 @@ export default async function PostPage({
             </span>
 
             {otherLanguages.length > 0 ? (
-              <div className="inline-flex items-center gap-2 rounded-full border border-ink-200/35 px-3 py-1.5">
+              <div className="inline-flex items-center gap-2 rounded-full border border-ink-200/35 px-3 py-1.5 font-medium">
                 <Languages className="h-4 w-4" />
                 <div className="flex gap-2">
                   {otherLanguages.map((entry) => (
@@ -137,11 +137,11 @@ export default async function PostPage({
           </div>
 
           {post.description ? (
-            <p className="mt-5 text-base leading-7 text-ink-100 sm:text-lg">{post.description}</p>
+            <p className="mt-6 text-lg leading-8 text-ink-100">{post.description}</p>
           ) : null}
         </header>
 
-        <section className="glass-panel mt-6 rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
+        <section className="glass-panel rounded-[2.5rem] px-6 py-8 sm:px-10 sm:py-12 shadow-sm">
           <div
             className={clsx(
               "prose prose-invert max-w-none",

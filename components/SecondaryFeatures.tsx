@@ -68,7 +68,7 @@ function DetailVisual({ index }: { index: number }) {
         {typeItems.map((item) => (
           <span
             key={item.label}
-            className="rounded-lg border border-ink-200/20 bg-ink-900/45 p-2 text-center"
+            className="rounded-xl border border-ink-200/20 bg-ink-900/45 p-2 text-center"
           >
             <item.icon className="mx-auto h-3.5 w-3.5 text-ember-200" />
             <span className="mt-1 block text-[10px] text-ink-100">{item.label}</span>
@@ -86,12 +86,12 @@ function DetailVisual({ index }: { index: number }) {
     ] as const;
 
     return (
-      <div className="rounded-xl border border-ink-200/20 bg-ink-900/45 p-3">
+      <div className="rounded-2xl border border-ink-200/20 bg-ink-900/45 p-3">
         <div className="space-y-2">
           {collections.map((collection) => (
             <div
               key={collection.name}
-              className="flex items-center justify-between rounded-lg border border-ink-200/20 bg-ink-900/45 px-2.5 py-1.5"
+              className="flex items-center justify-between rounded-xl border border-ink-200/20 bg-ink-900/45 px-2.5 py-1.5"
             >
               <span className="inline-flex items-center gap-1.5 text-xs text-ink-100">
                 <FolderKanban className="h-3.5 w-3.5 text-ember-200" />
@@ -109,19 +109,19 @@ function DetailVisual({ index }: { index: number }) {
 
   if (index === 2) {
     return (
-      <div className="rounded-xl border border-ink-200/20 bg-ink-900/45 p-3">
+      <div className="rounded-2xl border border-ink-200/20 bg-ink-900/45 p-3">
         <div className="flex items-center justify-between gap-2 text-[11px] text-ink-100">
-          <span className="inline-flex items-center gap-1.5 rounded-md border border-ink-200/25 bg-ink-900/55 px-2 py-1">
+          <span className="inline-flex items-center gap-1.5 rounded-lg border border-ink-200/25 bg-ink-900/55 px-2 py-1">
             <Share2 className="h-3 w-3 text-ink-200" />
             Safari
           </span>
           <span className="text-ember-200">Share</span>
-          <span className="inline-flex items-center gap-1.5 rounded-md border border-ember-300/35 bg-ember-400/10 px-2 py-1 text-ember-200">
+          <span className="inline-flex items-center gap-1.5 rounded-lg border border-ember-300/35 bg-ember-400/10 px-2 py-1 text-ember-200">
             Spark Memos
           </span>
         </div>
         <div className="mt-2 h-1.5 rounded-full bg-ink-200/20">
-          <span className="block h-full w-2/3 rounded-full bg-gradient-to-r from-ember-500/75 to-amber-300/75" />
+          <span className="block h-full w-2/3 rounded-full bg-ember-500/80" />
         </div>
       </div>
     );
@@ -129,7 +129,7 @@ function DetailVisual({ index }: { index: number }) {
 
   if (index === 3) {
     return (
-      <div className="rounded-xl border border-ink-200/20 bg-ink-900/45 p-3">
+      <div className="rounded-2xl border border-ink-200/20 bg-ink-900/45 p-3">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-1.5">
             {[
@@ -157,12 +157,12 @@ function DetailVisual({ index }: { index: number }) {
 
   if (index === 4) {
     return (
-      <div className="rounded-xl border border-ink-200/20 bg-ink-900/45 p-3">
+      <div className="rounded-2xl border border-ink-200/20 bg-ink-900/45 p-3">
         <div className="space-y-2">
           {["Unread memos", "Saved links", "Daily recap"].map((item) => (
             <div
               key={item}
-              className="flex items-center justify-between rounded-lg border border-ink-200/20 bg-ink-900/45 px-2.5 py-1.5"
+              className="flex items-center justify-between rounded-xl border border-ink-200/20 bg-ink-900/45 px-2.5 py-1.5"
             >
               <span className="inline-flex items-center gap-1.5 text-xs text-ink-100">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-300" />
@@ -177,16 +177,16 @@ function DetailVisual({ index }: { index: number }) {
   }
 
   return (
-    <div className="rounded-xl border border-ink-200/20 bg-ink-900/45 p-3">
+    <div className="rounded-2xl border border-ink-200/20 bg-ink-900/45 p-3">
       <div className="space-y-2">
-        <div className="flex items-center justify-between rounded-lg border border-ink-200/20 bg-ink-900/45 px-2.5 py-1.5">
+        <div className="flex items-center justify-between rounded-xl border border-ink-200/20 bg-ink-900/45 px-2.5 py-1.5">
           <span className="inline-flex items-center gap-1.5 text-xs text-ink-100">
             <LockKeyhole className="h-3.5 w-3.5 text-emerald-300" />
             Local encryption
           </span>
           <span className="text-[11px] font-semibold text-emerald-300">On</span>
         </div>
-        <div className="flex items-center justify-between rounded-lg border border-ink-200/20 bg-ink-900/45 px-2.5 py-1.5">
+        <div className="flex items-center justify-between rounded-xl border border-ink-200/20 bg-ink-900/45 px-2.5 py-1.5">
           <span className="inline-flex items-center gap-1.5 text-xs text-ink-100">
             <Cloud className="h-3.5 w-3.5 text-ink-200" />
             iCloud sync
@@ -220,11 +220,11 @@ export function SecondaryFeatures({ dict }: { dict: Dictionary }) {
           {features.map((feature, index) => (
             <li
               key={feature.name}
-              className="product-detail-card flex h-full flex-col rounded-2xl p-5 sm:p-6"
+              className="product-detail-card flex h-full flex-col rounded-[2rem] p-6"
               style={{ animationDelay: `${index * 90}ms` }}
             >
               <div className="mb-4 flex items-center justify-between gap-3">
-                <span className="detail-icon-shell inline-flex rounded-xl p-2.5 text-ember-200">
+                <span className="detail-icon-shell inline-flex rounded-2xl p-2.5 text-ember-200">
                   <feature.icon className="h-5 w-5" />
                 </span>
                 <span className="text-[11px] font-semibold tracking-[0.2em] text-ink-200">

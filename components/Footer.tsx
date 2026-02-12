@@ -24,11 +24,11 @@ export function Footer({ dict }: { dict: Dictionary }) {
   return (
     <footer className="mt-20 pb-10 sm:pb-14">
       <Container>
-        <div className="glass-panel rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
+        <div className="glass-panel rounded-[2.5rem] px-8 py-10 sm:px-10 sm:py-12">
           <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-lg">
               <div className="flex items-center gap-4 text-white">
-                <Logomark className="h-12 w-12 flex-none rounded-xl" />
+                <Logomark className="h-12 w-12 flex-none rounded-2xl" />
                 <div>
                   <p className="text-lg font-semibold">{dict.appName}</p>
                   <p className="mt-1 text-sm text-ink-100">{dict.appSummary}</p>
@@ -38,7 +38,7 @@ export function Footer({ dict }: { dict: Dictionary }) {
                 <NavLinks type="footer" dict={dict} />
               </nav>
             </div>
-            <div className="panel-stroke relative flex items-center gap-6 rounded-2xl bg-ink-900/55 p-4 sm:p-6">
+            <div className="panel-stroke relative flex items-center gap-6 rounded-[1.75rem] bg-ink-900/55 p-5 sm:p-7">
               <div className="relative flex h-24 w-24 shrink-0 items-center justify-center text-white">
                 <QrCodeBorder className="absolute inset-0 h-full w-full stroke-ink-200/45" />
                 <AppStoreQRCode />
@@ -46,7 +46,7 @@ export function Footer({ dict }: { dict: Dictionary }) {
               <div className="max-w-xs">
                 <p className="text-sm font-semibold text-white sm:text-base">
                   <Link href={METADATA.appStoreLink} target="_blank">
-                    <span className="absolute inset-0 rounded-2xl" />
+                    <span className="absolute inset-0 rounded-[1.75rem]" />
                     {dict.labels.downloadTheApp}
                   </Link>
                 </p>

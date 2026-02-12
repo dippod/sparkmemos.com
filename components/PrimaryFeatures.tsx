@@ -29,7 +29,7 @@ const featureIcons = [
 function FeaturePreview({ index }: { index: number }) {
   if (index === 0) {
     return (
-      <div className="mt-4 rounded-xl border border-ink-200/20 bg-ink-800/55 p-3">
+      <div className="mt-4 rounded-2xl border border-ink-200/20 bg-ink-800/55 p-3">
         <div className="mb-2 flex gap-1.5">
           <span className="h-2 w-2 rounded-full bg-ember-300/80" />
           <span className="h-2 w-2 rounded-full bg-amber-300/70" />
@@ -60,8 +60,8 @@ function FeaturePreview({ index }: { index: number }) {
 
   if (index === 2) {
     return (
-      <div className="mt-4 rounded-xl border border-ink-200/20 bg-ink-800/55 p-3">
-        <div className="flex items-center gap-2 rounded-lg border border-ink-200/20 bg-ink-900/50 px-2.5 py-1.5 text-xs text-ink-100">
+      <div className="mt-4 rounded-2xl border border-ink-200/20 bg-ink-800/55 p-3">
+        <div className="flex items-center gap-2 rounded-xl border border-ink-200/20 bg-ink-900/50 px-2.5 py-1.5 text-xs text-ink-100">
           <span className="text-ink-200">⌕</span>
           <span className="truncate">voice memo ideas</span>
         </div>
@@ -71,12 +71,12 @@ function FeaturePreview({ index }: { index: number }) {
 
   if (index === 3) {
     return (
-      <div className="mt-4 flex items-end gap-1.5">
-        {[30, 52, 42, 66, 58, 74].map((height, barIndex) => (
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {[0.1, 0.4, 0.2, 0.8, 0.3, 0.1, 0.5, 0.2, 0.9, 0.4].map((opacity, i) => (
           <span
-            key={barIndex}
-            className="w-3 rounded-t bg-gradient-to-t from-ember-500/80 to-amber-300/70"
-            style={{ height: `${height / 3}px` }}
+            key={i}
+            className="h-3.5 w-3.5 rounded-sm bg-ember-500"
+            style={{ opacity }}
           />
         ))}
       </div>
@@ -96,7 +96,7 @@ function FeaturePreview({ index }: { index: number }) {
   }
 
   return (
-    <div className="mt-4 rounded-xl border border-ink-200/20 bg-ink-800/55 p-3">
+    <div className="mt-4 rounded-2xl border border-ink-200/20 bg-ink-800/55 p-3">
       <div className="mb-2 h-2 w-2/3 rounded-full bg-ink-200/20" />
       <div className="h-2 w-1/2 rounded-full bg-ink-200/20" />
     </div>
@@ -127,9 +127,9 @@ export function PrimaryFeatures({ dict }: { dict: Dictionary }) {
             {features.map((feature, index) => {
               const Icon = featureIcons[index] ?? WandSparkles;
               return (
-                <li key={feature.title} className="glass-panel rounded-3xl p-6">
+                <li key={feature.title} className="glass-panel rounded-[2.5rem] p-7">
                   <div className="flex items-center justify-between">
-                    <span className="inline-flex rounded-lg border border-ember-300/40 bg-ember-400/10 p-2 text-ember-200">
+                    <span className="inline-flex rounded-2xl border border-ember-300/40 bg-ember-400/10 p-2 text-ember-200">
                       <Icon className="h-4 w-4" />
                     </span>
                     <span className="text-xs font-semibold tracking-[0.2em] text-ink-200">
@@ -137,7 +137,7 @@ export function PrimaryFeatures({ dict }: { dict: Dictionary }) {
                     </span>
                   </div>
 
-                  <h3 className="mt-3 text-xl font-semibold leading-tight text-white">
+                  <h3 className="mt-4 text-xl font-semibold leading-tight text-white">
                     {feature.title}
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-ink-100">{feature.description}</p>
@@ -148,9 +148,9 @@ export function PrimaryFeatures({ dict }: { dict: Dictionary }) {
             })}
           </ol>
 
-          <aside className="glass-panel relative h-full overflow-visible rounded-3xl p-4 sm:p-5">
+          <aside className="glass-panel relative h-full overflow-visible rounded-[2.5rem] p-4 sm:p-5">
             <div className="relative h-full min-h-[46rem]">
-              <figure className="feature-shot-shadow-strong panel-stroke absolute left-1/2 top-[3%] z-30 w-[50%] -translate-x-1/2 rotate-[1deg] overflow-hidden rounded-2xl bg-ink-900/55">
+              <figure className="feature-shot-shadow-strong panel-stroke absolute left-1/2 top-[3%] z-30 w-[50%] -translate-x-1/2 rotate-[1deg] overflow-hidden rounded-[2rem] bg-ink-900/55">
                 <Image
                   src={searchScreenshot}
                   alt="Spark Memos search screen"
@@ -159,7 +159,7 @@ export function PrimaryFeatures({ dict }: { dict: Dictionary }) {
                 />
               </figure>
 
-              <figure className="feature-shot-shadow-soft panel-stroke absolute left-[-9%] top-[26%] z-20 w-[40%] -rotate-[7deg] overflow-hidden rounded-2xl bg-ink-900/55">
+              <figure className="feature-shot-shadow-soft panel-stroke absolute left-[-9%] top-[26%] z-20 w-[40%] -rotate-[7deg] overflow-hidden rounded-[2rem] bg-ink-900/55">
                 <Image
                   src={collectionsScreenshot}
                   alt="Spark Memos collection view"
@@ -167,7 +167,7 @@ export function PrimaryFeatures({ dict }: { dict: Dictionary }) {
                 />
               </figure>
 
-              <figure className="feature-shot-shadow-soft panel-stroke absolute right-[-9%] top-[33%] z-10 w-[40%] rotate-[6deg] overflow-hidden rounded-2xl bg-ink-900/55">
+              <figure className="feature-shot-shadow-soft panel-stroke absolute right-[-9%] top-[33%] z-10 w-[40%] rotate-[6deg] overflow-hidden rounded-[2rem] bg-ink-900/55">
                 <Image
                   src={activityScreenshot}
                   alt="Spark Memos analytics screen"
@@ -175,7 +175,7 @@ export function PrimaryFeatures({ dict }: { dict: Dictionary }) {
                 />
               </figure>
 
-              <figure className="feature-shot-shadow-strong panel-stroke absolute right-[-1%] top-[56%] z-40 w-[36%] -rotate-[4deg] overflow-hidden rounded-2xl bg-ink-900/55">
+              <figure className="feature-shot-shadow-strong panel-stroke absolute right-[-1%] top-[56%] z-40 w-[36%] -rotate-[4deg] overflow-hidden rounded-[2rem] bg-ink-900/55">
                 <Image
                   src={memoReviewScreenshot}
                   alt="Spark Memos memo review screen"

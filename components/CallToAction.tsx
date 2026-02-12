@@ -7,7 +7,7 @@ export function CallToAction({ dict }: { dict: Dictionary }) {
   return (
     <section id="get-free-shares-today" className="py-14 sm:py-20">
       <Container>
-        <div className="cta-shell relative overflow-hidden rounded-[2.25rem] px-6 py-12 sm:px-12 sm:py-16">
+        <div className="cta-shell relative overflow-hidden rounded-[3rem] px-6 py-12 sm:px-12 sm:py-20">
           <div className="relative mx-auto max-w-4xl text-center">
             <p className="inline-flex rounded-full border border-ink-200/35 bg-ink-100/10 px-4 py-1 text-xs font-semibold tracking-[0.2em] text-ink-200 uppercase">
               {dict.labels.download}

@@ -32,7 +32,7 @@ function HeroFeatureVisual({ index }: { index: number }) {
 
   if (index === 1) {
     return (
-      <div className="mt-3 rounded-lg border border-ink-200/25 bg-ink-900/45 p-2.5">
+      <div className="mt-3 rounded-2xl border border-ink-200/25 bg-ink-900/45 p-2.5">
         <div className="flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-ember-300/80" />
           <span className="h-2 w-2 rounded-full bg-amber-300/70" />
@@ -47,8 +47,8 @@ function HeroFeatureVisual({ index }: { index: number }) {
   }
 
   return (
-    <div className="mt-3 rounded-lg border border-ink-200/25 bg-ink-900/45 p-2.5">
-      <div className="flex items-center gap-2 rounded-md border border-ink-200/20 bg-ink-900/60 px-2 py-1 text-[11px] text-ink-100">
+    <div className="mt-3 rounded-2xl border border-ink-200/25 bg-ink-900/45 p-2.5">
+      <div className="flex items-center gap-2 rounded-xl border border-ink-200/20 bg-ink-900/60 px-2 py-1 text-[11px] text-ink-100">
         <span>⌕</span>
         <span className="truncate">voice memo ideas</span>
       </div>
@@ -92,9 +92,12 @@ export function Hero({ dict }: { dict: Dictionary }) {
                 const Icon = featureIcons[index] ?? Sparkles;
 
                 return (
-                  <article key={feature.title} className="panel-stroke rounded-2xl bg-ink-900/45 p-4">
+                  <article
+                    key={feature.title}
+                    className="panel-stroke rounded-[2rem] bg-ink-900/45 p-5"
+                  >
                     <div className="flex items-center justify-between">
-                      <span className="inline-flex rounded-lg border border-ember-300/40 bg-ember-400/10 p-2 text-ember-200">
+                      <span className="inline-flex rounded-2xl border border-ember-300/40 bg-ember-400/10 p-2 text-ember-200">
                         <Icon className="h-4 w-4" />
                       </span>
                       <span className="text-xs font-semibold tracking-[0.18em] text-ink-200">

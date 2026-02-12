@@ -59,7 +59,7 @@ export default async function PostsPage({
 
   return (
     <main className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-10">
-      <section className="glass-panel rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
+      <div className="py-8 sm:py-12">
         <p className="inline-flex rounded-full border border-ember-300/45 bg-ember-500/15 px-4 py-1 text-xs font-semibold tracking-[0.18em] text-ember-200 uppercase">
           {dictionary.labels.blog}
         </p>
@@ -67,12 +67,12 @@ export default async function PostsPage({
           {dictionary.blog.title}
         </h1>
         <p className="mt-4 max-w-3xl text-lg text-ink-100">{dictionary.blog.description}</p>
-      </section>
+      </div>
 
-      <div className="mt-8 grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
+      <div className="mt-4 grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <section className="space-y-4" aria-label="Blog posts">
           {publishedPosts.map((post) => (
-            <article key={post.slug} className="panel-stroke rounded-2xl bg-ink-900/55 p-5 sm:p-6">
+            <article key={post.slug} className="glass-panel rounded-[2rem] p-6 sm:p-8">
               <div className="mb-3 flex items-center gap-2 text-xs text-ink-200">
                 <CalendarDays className="h-4 w-4" />
                 <time dateTime={post.date}>
@@ -92,7 +92,7 @@ export default async function PostsPage({
           ))}
         </section>
 
-        <aside className="glass-panel rounded-2xl p-5 lg:sticky lg:top-24">
+        <aside className="panel-stroke rounded-[2rem] bg-ink-900/55 p-6 lg:sticky lg:top-24">
           <h2 className="text-sm font-semibold tracking-[0.14em] text-ink-100 uppercase">
             {dictionary.blog.categories}
           </h2>
@@ -101,7 +101,7 @@ export default async function PostsPage({
               <li key={category.slug}>
                 <Link
                   href={category.permalink[lang]}
-                  className="flex items-center justify-between rounded-xl border border-transparent px-3 py-2 text-sm text-ink-100 hover:border-ink-200/35 hover:bg-ink-200/10 hover:text-white"
+                  className="flex items-center justify-between rounded-2xl border border-transparent px-3 py-2 text-sm text-ink-100 hover:border-ink-200/35 hover:bg-ink-200/10 hover:text-white"
                 >
                   <span>{category.name[lang]}</span>
                   <span className="text-xs text-ink-300">{category.count[lang]}</span>

@@ -21,7 +21,7 @@ export function Faqs({ dict }: { dict: Dictionary }) {
           {dict.homeSections.faq.items.map((column, columnIndex) => (
             <li key={columnIndex} className="space-y-4">
               {column.map((faq, faqIndex) => (
-                <article key={faqIndex} className="faq-card rounded-2xl p-5 sm:p-6">
+                <article key={faqIndex} className="faq-card rounded-[2rem] p-6">
                   <div className="flex items-start gap-3">
                     <span className="faq-question-badge mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full">
                       <MessageCircleQuestion className="h-3.5 w-3.5" />

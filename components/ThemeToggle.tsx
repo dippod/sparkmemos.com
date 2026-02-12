@@ -41,7 +41,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={label}
       title={label}
       className={clsx(
-        "inline-flex h-10 w-10 items-center justify-center rounded-xl transition",
+        "inline-flex h-10 w-10 items-center justify-center rounded-full transition",
         className ||
           "border border-ink-200/30 bg-ink-900/70 text-ink-100 hover:border-ink-200/55 hover:bg-ink-900/80"
       )}

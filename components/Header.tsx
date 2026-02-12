@@ -8,6 +8,7 @@ import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 import { NavLinks } from "@/components/NavLinks";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { METADATA } from "@/constants/metadata";
 import { Dictionary } from "@/dictionaries";
 
@@ -52,7 +53,7 @@ export function Header({ dict }: { dict: Dictionary }) {
     <header className="sticky top-0 z-50 pt-4 md:pt-6">
       <nav>
         <Container className="relative">
-          <div className="glass-panel flex items-center justify-between gap-3 rounded-2xl px-4 py-3 md:px-5 md:-mx-5">
+          <div className="glass-panel flex items-center justify-between gap-3 rounded-full px-5 py-2.5 md:px-7 md:-mx-5">
             <div className="flex min-w-0 items-center gap-3 lg:gap-10">
               <Link
                 href={dict.urls.home}
@@ -69,6 +70,7 @@ export function Header({ dict }: { dict: Dictionary }) {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <ThemeToggle />
               <Button
                 href={METADATA.appStoreLink}
                 target="_blank"
@@ -80,7 +82,7 @@ export function Header({ dict }: { dict: Dictionary }) {
                 {({ open }) => (
                   <>
                     <Popover.Button
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-ink-200/30 bg-ink-900/70 text-ink-100 ui-not-focus-visible:outline-none"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-ink-200/30 bg-ink-900/70 text-ink-100 ui-not-focus-visible:outline-none"
                       aria-label="Toggle site navigation"
                     >
                       {open ? (
@@ -106,7 +108,7 @@ export function Header({ dict }: { dict: Dictionary }) {
                             initial={{ opacity: 0, y: -18 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -18 }}
-                            className="glass-panel absolute inset-x-0 top-[calc(100%+0.75rem)] rounded-2xl p-4"
+                            className="glass-panel absolute inset-x-0 top-[calc(100%+0.75rem)] rounded-[2rem] p-5"
                           >
                             <div className="grid gap-2">
                               {mobileLinks.map(([label, href]) => (
@@ -114,7 +116,7 @@ export function Header({ dict }: { dict: Dictionary }) {
                                   as={Link}
                                   href={href}
                                   key={href}
-                                  className="rounded-xl border border-transparent px-3 py-2 text-left text-sm text-ink-50 hover:border-ink-200/30 hover:bg-ink-200/10"
+                                  className="rounded-2xl border border-transparent px-4 py-2 text-left text-sm text-ink-50 hover:border-ink-200/30 hover:bg-ink-200/10"
                                 >
                                   {label}
                                 </Popover.Button>
@@ -123,7 +125,7 @@ export function Header({ dict }: { dict: Dictionary }) {
                             <Button
                               href={METADATA.appStoreLink}
                               target="_blank"
-                              className="mt-4 w-full"
+                              className="mt-5 w-full"
                             >
                               {dict.labels.downloadTheApp}
                             </Button>
