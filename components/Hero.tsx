@@ -114,7 +114,7 @@ export function Hero({ dict }: { dict: Dictionary }) {
             className="animate-fade-in-up flex justify-center lg:pt-6"
             style={{ animationDelay: "180ms" }}
           >
-            <PhoneFrame className="w-full max-w-[320px] drop-shadow-[0_28px_60px_rgba(5,8,16,0.58)]">
+            <PhoneFrame className="hero-phone-shadow w-full max-w-[320px]">
               <Image
                 className="h-full w-full object-contain"
                 src={overviewScreenshot}

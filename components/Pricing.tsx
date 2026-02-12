@@ -50,47 +50,67 @@ function Plan({
 }) {
   const currentPrice = activePeriod === "Monthly" ? price.Monthly : price.Annually;
   const showPeriodTag = featured;
+  const buttonVariant = featured ? ("solid" as const) : ("outline" as const);
+  const buttonColor = featured ? ("orange" as const) : ("gray" as const);
+  const numberPart = currentPrice.replace(/[^0-9.]/g, "");
+  const symbolPart = currentPrice.replace(/[0-9.]/g, "") || "$";
 
   return (
     <article
       className={clsx(
-        "relative z-10 rounded-3xl p-6 sm:p-7",
-        featured
-          ? "border border-ember-300/55 bg-gradient-to-br from-ember-500/18 to-ink-900/70 shadow-[0_20px_48px_rgba(241,79,16,0.3)]"
-          : "glass-panel"
+        "pricing-card relative z-10 flex h-full flex-col overflow-hidden rounded-3xl p-6 sm:p-7",
+        featured && "pricing-card-featured pricing-card-featured-boost"
       )}
     >
-      <div className="flex items-center gap-3">
-        <Logomark className={clsx("h-9 w-9 rounded-lg", logomarkClassName)} />
-        <h3 className="text-lg font-semibold text-white">{name}</h3>
-      </div>
-
-      <div className="mt-5 flex items-end gap-2">
-        <p className="text-display text-4xl text-white">{currentPrice}</p>
-        {showPeriodTag ? (
-          <p className="text-sm text-ink-100">/{activePeriod === "Monthly" ? "mo" : "yr"}</p>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Logomark className={clsx("pricing-plan-mark h-10 w-10 rounded-xl", logomarkClassName)} />
+          <h3 className="text-2xl font-semibold text-white">{name}</h3>
+        </div>
+        {featured ? (
+          <span className="pricing-badge rounded-full px-3 py-1 text-xs font-semibold tracking-wide uppercase">
+            Popular
+          </span>
         ) : null}
       </div>
 
-      <p className="mt-3 text-sm leading-6 text-ink-100">{description}</p>
+      <div className="mt-6 flex items-end gap-1.5">
+        <p className="pb-1 text-xl font-semibold text-ink-300">{symbolPart}</p>
+        <p className="text-display text-6xl leading-none text-white">{numberPart}</p>
+        {showPeriodTag ? (
+          <p className="pb-1 text-sm font-medium text-ink-200">
+            /{activePeriod === "Monthly" ? "mo" : "yr"}
+          </p>
+        ) : null}
+      </div>
 
-      <ul className="mt-6 space-y-2">
+      <p className="mt-4 text-base leading-7 text-ink-100">{description}</p>
+
+      <ul className="mt-7 space-y-3">
         {features.map((feature) => (
-          <li key={feature} className="flex items-start gap-2 text-sm text-ink-50">
-            <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-ember-300" />
+          <li key={feature} className="flex items-start gap-2.5 text-base text-ink-50">
+            <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-ember-300/35 bg-ember-500/10">
+              <CheckIcon className="h-3.5 w-3.5 text-ember-300" />
+            </span>
             <span>{feature}</span>
           </li>
         ))}
       </ul>
 
-      <Button
-        href={button.href}
-        color={featured ? "orange" : "gray"}
-        className="mt-6 w-full"
-        aria-label={`Get started with the ${name} plan for ${currentPrice}`}
-      >
-        {button.label}
-      </Button>
+      <div className="mt-auto pt-8">
+        <Button
+          href={button.href}
+          variant={buttonVariant}
+          color={buttonColor}
+          className={clsx(
+            "w-full py-3 text-[1.05rem]",
+            featured && "pricing-featured-cta theme-keep-white"
+          )}
+          aria-label={`Get started with the ${name} plan for ${currentPrice}`}
+        >
+          {button.label}
+        </Button>
+      </div>
     </article>
   );
 }
@@ -99,20 +119,22 @@ export function Pricing({ dict }: { dict: Dictionary }) {
   const [activePeriod, setActivePeriod] = useState<"Monthly" | "Annually">("Monthly");
 
   return (
-    <section id="pricing" className="relative isolate py-12 sm:py-20">
+    <section id="pricing" className="relative isolate py-14 sm:py-24">
       <Container>
         <div className="relative z-10 mx-auto max-w-3xl text-center">
           <p className="inline-flex rounded-full border border-ink-200/40 bg-ink-200/10 px-4 py-1 text-xs font-semibold tracking-[0.18em] text-ink-100 uppercase">
             {dict.labels.pricing}
           </p>
-          <h2 className="text-display mt-4 text-balance text-3xl text-white sm:text-4xl">
+          <h2 className="text-display mt-4 text-balance text-3xl text-white sm:text-5xl">
             {dict.homeSections.pricing.title}
           </h2>
-          <p className="mt-3 text-lg text-ink-100">{dict.homeSections.pricing.description}</p>
+          <p className="mt-4 text-xl leading-relaxed text-ink-100">
+            {dict.homeSections.pricing.description}
+          </p>
         </div>
 
-        <div className="relative z-10 mt-8 flex justify-center">
-          <div className="glass-panel inline-flex rounded-full p-1">
+        <div className="relative z-10 mt-9 flex justify-center">
+          <div className="pricing-toggle-shell inline-flex rounded-full p-1.5">
             {(["Monthly", "Annually"] as const).map((period) => {
               const active = period === activePeriod;
               return (
@@ -121,10 +143,8 @@ export function Pricing({ dict }: { dict: Dictionary }) {
                   type="button"
                   onClick={() => setActivePeriod(period)}
                   className={clsx(
-                    "rounded-full px-5 py-2 text-sm font-semibold transition",
-                    active
-                      ? "bg-ember-500 text-white shadow-[0_8px_24px_rgba(241,79,16,0.45)]"
-                      : "text-ink-100 hover:text-white"
+                    "pricing-toggle-btn rounded-full px-6 py-2.5 text-base font-semibold transition",
+                    active && "pricing-toggle-btn-active theme-keep-white"
                   )}
                 >
                   {period === "Monthly"
@@ -136,7 +156,7 @@ export function Pricing({ dict }: { dict: Dictionary }) {
           </div>
         </div>
 
-        <div className="relative z-10 mt-8 grid gap-4 lg:grid-cols-3">
+        <div className="relative z-10 mt-10 grid gap-5 lg:grid-cols-3">
           {dict.homeSections.pricing.plans.map((plan) => (
             <Plan key={plan.name} {...plan} activePeriod={activePeriod} />
           ))}

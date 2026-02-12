@@ -54,8 +54,15 @@ export function Header({ dict }: { dict: Dictionary }) {
         <Container className="relative">
           <div className="glass-panel flex items-center justify-between gap-3 rounded-2xl px-4 py-3 md:px-5">
             <div className="flex min-w-0 items-center gap-3 lg:gap-10">
-              <Link href={dict.urls.home} aria-label="Home" className="shrink-0">
-                <Logo className="h-10 w-auto text-white" label={dict.websiteName} />
+              <Link
+                href={dict.urls.home}
+                aria-label="Home"
+                className="shrink-0"
+              >
+                <Logo
+                  className="h-10 w-auto text-white"
+                  label={dict.websiteName}
+                />
               </Link>
               <div className="hidden lg:flex lg:flex-wrap lg:items-center lg:gap-2">
                 <NavLinks type="header" dict={dict} />

@@ -1,3 +1,5 @@
+import { MessageCircleQuestion } from "lucide-react";
+
 import { Container } from "@/components/Container";
 import { Dictionary } from "@/dictionaries";
 
@@ -15,13 +17,18 @@ export function Faqs({ dict }: { dict: Dictionary }) {
           <p className="mt-3 text-lg text-ink-100">{dict.homeSections.faq.description}</p>
         </div>
 
-        <ul className="mt-8 grid gap-4 lg:grid-cols-3">
+        <ul className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {dict.homeSections.faq.items.map((column, columnIndex) => (
             <li key={columnIndex} className="space-y-4">
               {column.map((faq, faqIndex) => (
-                <article key={faqIndex} className="panel-stroke rounded-2xl bg-ink-900/55 p-5">
-                  <h3 className="text-base font-semibold text-white sm:text-lg">{faq.question}</h3>
-                  <p className="mt-3 text-sm leading-6 text-ink-100 sm:text-base">{faq.answer}</p>
+                <article key={faqIndex} className="faq-card rounded-2xl p-5 sm:p-6">
+                  <div className="flex items-start gap-3">
+                    <span className="faq-question-badge mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full">
+                      <MessageCircleQuestion className="h-3.5 w-3.5" />
+                    </span>
+                    <h3 className="text-base font-semibold text-white sm:text-lg">{faq.question}</h3>
+                  </div>
+                  <p className="mt-4 text-sm leading-6 text-ink-100 sm:text-base">{faq.answer}</p>
                 </article>
               ))}
             </li>

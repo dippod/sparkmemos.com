@@ -15,8 +15,8 @@ export function AppStoreLink({
       className={clsx(
         "rounded-2xl border px-2 py-1 transition hover:-translate-y-0.5",
         color === "black"
-          ? "border-ink-200/25 bg-ink-900/80 text-white shadow-[0_16px_38px_rgba(9,13,21,0.42)] hover:border-ink-200/45 hover:bg-ink-900"
-          : "border-white/60 bg-white text-ink-900 shadow-[0_14px_34px_rgba(255,190,138,0.24)] hover:bg-ink-50"
+          ? "theme-keep-white border-ember-300/40 bg-gradient-to-r from-ember-500 to-ember-400 text-white shadow-[0_16px_38px_rgba(241,79,16,0.42)] hover:brightness-110"
+          : "border-white/60 bg-white text-[#2e1d14] shadow-[0_14px_34px_rgba(255,190,138,0.24)] hover:bg-ink-50"
       )}
     >
       <svg viewBox="0 0 120 40" aria-hidden="true" className="h-10">

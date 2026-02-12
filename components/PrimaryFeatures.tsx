@@ -150,7 +150,7 @@ export function PrimaryFeatures({ dict }: { dict: Dictionary }) {
 
           <aside className="glass-panel relative h-full overflow-visible rounded-3xl p-4 sm:p-5">
             <div className="relative h-full min-h-[46rem]">
-              <figure className="panel-stroke absolute left-1/2 top-[3%] z-30 w-[50%] -translate-x-1/2 rotate-[1deg] overflow-hidden rounded-2xl bg-ink-900/55 shadow-[0_14px_34px_rgba(20,10,6,0.35)]">
+              <figure className="feature-shot-shadow-strong panel-stroke absolute left-1/2 top-[3%] z-30 w-[50%] -translate-x-1/2 rotate-[1deg] overflow-hidden rounded-2xl bg-ink-900/55">
                 <Image
                   src={searchScreenshot}
                   alt="Spark Memos search screen"
@@ -159,7 +159,7 @@ export function PrimaryFeatures({ dict }: { dict: Dictionary }) {
                 />
               </figure>
 
-              <figure className="panel-stroke absolute left-[-9%] top-[26%] z-20 w-[40%] -rotate-[7deg] overflow-hidden rounded-2xl bg-ink-900/55 shadow-[0_12px_28px_rgba(20,10,6,0.28)]">
+              <figure className="feature-shot-shadow-soft panel-stroke absolute left-[-9%] top-[26%] z-20 w-[40%] -rotate-[7deg] overflow-hidden rounded-2xl bg-ink-900/55">
                 <Image
                   src={collectionsScreenshot}
                   alt="Spark Memos collection view"
@@ -167,7 +167,7 @@ export function PrimaryFeatures({ dict }: { dict: Dictionary }) {
                 />
               </figure>
 
-              <figure className="panel-stroke absolute right-[-9%] top-[33%] z-10 w-[40%] rotate-[6deg] overflow-hidden rounded-2xl bg-ink-900/55 shadow-[0_12px_28px_rgba(20,10,6,0.28)]">
+              <figure className="feature-shot-shadow-soft panel-stroke absolute right-[-9%] top-[33%] z-10 w-[40%] rotate-[6deg] overflow-hidden rounded-2xl bg-ink-900/55">
                 <Image
                   src={activityScreenshot}
                   alt="Spark Memos analytics screen"
@@ -175,7 +175,7 @@ export function PrimaryFeatures({ dict }: { dict: Dictionary }) {
                 />
               </figure>
 
-              <figure className="panel-stroke absolute right-[-1%] top-[56%] z-40 w-[36%] -rotate-[4deg] overflow-hidden rounded-2xl bg-ink-900/55 shadow-[0_14px_32px_rgba(20,10,6,0.3)]">
+              <figure className="feature-shot-shadow-strong panel-stroke absolute right-[-1%] top-[56%] z-40 w-[36%] -rotate-[4deg] overflow-hidden rounded-2xl bg-ink-900/55">
                 <Image
                   src={memoReviewScreenshot}
                   alt="Spark Memos memo review screen"

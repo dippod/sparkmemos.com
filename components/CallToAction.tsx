@@ -1,24 +1,31 @@
-import { AppStoreLink } from "@/components/AppStoreLink";
+import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
+import { METADATA } from "@/constants/metadata";
 import { Dictionary } from "@/dictionaries";
 
 export function CallToAction({ dict }: { dict: Dictionary }) {
   return (
-    <section id="get-free-shares-today" className="py-10 sm:py-14">
+    <section id="get-free-shares-today" className="py-14 sm:py-20">
       <Container>
-        <div className="relative overflow-hidden rounded-[2rem] border border-ember-300/40 bg-gradient-to-br from-ember-500/28 via-amber-300/18 to-ember-300/16 px-6 py-10 sm:px-10 sm:py-14">
-          <div className="pointer-events-none absolute -left-16 top-1/2 h-56 w-56 -translate-y-1/2 rounded-full bg-ember-300/30 blur-3xl" />
-          <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-orange-200/18 blur-3xl" />
-
-          <div className="relative mx-auto max-w-3xl text-center">
-            <h2 className="text-display text-balance text-3xl text-white sm:text-5xl">
+        <div className="cta-shell relative overflow-hidden rounded-[2.25rem] px-6 py-12 sm:px-12 sm:py-16">
+          <div className="relative mx-auto max-w-4xl text-center">
+            <p className="inline-flex rounded-full border border-ink-200/35 bg-ink-100/10 px-4 py-1 text-xs font-semibold tracking-[0.2em] text-ink-200 uppercase">
+              {dict.labels.download}
+            </p>
+            <h2 className="text-display mt-6 text-balance text-4xl text-white sm:text-6xl">
               {dict.homeSections.callToAction.title}
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-ink-50">
+            <p className="mx-auto mt-5 max-w-3xl text-xl leading-relaxed text-ink-100">
               {dict.homeSections.callToAction.description}
             </p>
-            <div className="mt-8 flex justify-center">
-              <AppStoreLink color="white" />
+            <div className="mt-10 flex justify-center">
+              <Button
+                href={METADATA.appStoreLink}
+                target="_blank"
+                className="cta-download-btn theme-keep-white px-8 py-3 text-lg"
+              >
+                {dict.labels.downloadTheApp}
+              </Button>
             </div>
           </div>
         </div>

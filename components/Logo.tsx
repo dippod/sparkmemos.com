@@ -8,7 +8,7 @@ export function Logomark({
 }: React.ComponentPropsWithoutRef<"img">) {
   return (
     <Image
-      className={clsx(className, "rounded-lg")}
+      className={clsx(className, "rounded-xl")}
       {...props}
       src={appIcon}
       width={40}
@@ -29,7 +29,7 @@ export function Logo({
       aria-hidden="true"
       {...props}
     >
-      <Logomark className="shadow-[0_8px_20px_rgba(10,14,23,0.42)]" />
+      <Logomark />
       <span className="text-display text-xl tracking-wide">{label}</span>
     </div>
   );

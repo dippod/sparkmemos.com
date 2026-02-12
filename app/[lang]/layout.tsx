@@ -19,6 +19,21 @@ const fraunces = Fraunces({
   variable: "--font-fraunces",
 });
 
+const themeScript = `(() => {
+  try {
+    const stored = localStorage.getItem("theme");
+    const theme =
+      stored === "light" || stored === "dark"
+        ? stored
+        : window.matchMedia("(prefers-color-scheme: light)").matches
+          ? "light"
+          : "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
+})();`;
+
 export async function generateMetadata({
   params,
 }: {
@@ -71,12 +86,16 @@ export default async function RootLayout({
   return (
     <html
       lang={lang}
+      suppressHydrationWarning
       className={clsx(
-        "bg-[#0d1017] text-stone-100 antialiased",
+        "bg-[#120b08] text-ink-100 antialiased",
         manrope.variable,
-        fraunces.variable
+        fraunces.variable,
       )}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>{children}</body>
     </html>
   );

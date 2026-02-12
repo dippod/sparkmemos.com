@@ -11,9 +11,9 @@ const baseStyles = {
 const variantStyles = {
   solid: {
     orange:
-      "bg-gradient-to-r from-ember-500 to-ember-400 text-white shadow-[0_14px_34px_rgba(241,79,16,0.45)] hover:brightness-110 active:brightness-95",
+      "theme-keep-white bg-gradient-to-r from-ember-500 to-ember-400 text-white shadow-[0_14px_34px_rgba(241,79,16,0.45)] hover:brightness-110 active:brightness-95",
     white:
-      "bg-white text-ink-900 shadow-[0_14px_30px_rgba(255,187,135,0.3)] hover:bg-ink-50 active:bg-white/90",
+      "bg-white text-[#2e1d14] shadow-[0_14px_30px_rgba(255,187,135,0.3)] hover:bg-ink-50 active:bg-white/90",
     gray: "glass-panel text-ink-50 hover:border-ink-200/40 hover:text-white",
   },
   outline: {

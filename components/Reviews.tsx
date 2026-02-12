@@ -131,7 +131,7 @@ function ReviewCard({
   className,
 }: Review & { className?: string }) {
   return (
-    <figure className={clsx("glass-panel rounded-2xl p-5", className)}>
+    <figure className={clsx("review-card-surface rounded-2xl p-5", className)}>
       <blockquote className="text-ink-50">
         <StarRating rating={rating} />
         <p className="mt-4 text-base font-semibold leading-6">{title}</p>
@@ -197,20 +197,26 @@ export function Reviews({ dict }: { dict: Dictionary }) {
           <p className="mt-3 text-lg text-ink-100">{dict.homeSections.reviews.description}</p>
         </div>
 
-        <div className="relative mt-8 h-[44rem] max-h-[140vh] overflow-hidden rounded-3xl border border-ink-200/10">
-          <div className="grid h-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]">
-            <ReviewColumn reviews={columns[0] ?? []} durationSeconds={46} />
-            <ReviewColumn
-              reviews={columns[1] ?? []}
-              durationSeconds={54}
-              className="hidden md:block"
-            />
-            <ReviewColumn
-              reviews={columns[2] ?? []}
-              durationSeconds={42}
-              className="hidden xl:block"
-            />
+        <div className="relative mt-8">
+          <div className="grid h-[44rem] max-h-[140vh] grid-cols-1 gap-4 overflow-hidden md:grid-cols-2 xl:grid-cols-3">
+            <div className="h-full overflow-hidden">
+              <ReviewColumn reviews={columns[0] ?? []} durationSeconds={46} />
+            </div>
+            <div className="hidden h-full overflow-hidden md:block">
+              <ReviewColumn reviews={columns[1] ?? []} durationSeconds={54} />
+            </div>
+            <div className="hidden h-full overflow-hidden xl:block">
+              <ReviewColumn reviews={columns[2] ?? []} durationSeconds={42} />
+            </div>
           </div>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[color:var(--site-bg)] via-[color:var(--site-bg)]/85 to-transparent"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[color:var(--site-bg)] via-[color:var(--site-bg)]/85 to-transparent"
+          />
         </div>
       </Container>
     </section>

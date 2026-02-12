@@ -33,7 +33,7 @@ export function NavLinks({
       href={href}
       className={
         type === "header"
-          ? "rounded-full border border-transparent px-3 py-2 text-sm text-ink-100 hover:border-ink-200/35 hover:bg-ink-200/10 hover:text-white"
+          ? "header-nav-link px-3 py-1.5 text-[0.95rem] font-medium"
           : "text-sm text-ink-200 underline-offset-4 hover:text-white hover:underline"
       }
     >
