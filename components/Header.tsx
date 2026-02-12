@@ -52,7 +52,7 @@ export function Header({ dict }: { dict: Dictionary }) {
     <header className="sticky top-0 z-50 pt-4 md:pt-6">
       <nav>
         <Container className="relative">
-          <div className="glass-panel flex items-center justify-between gap-3 rounded-2xl px-4 py-3 md:px-5">
+          <div className="glass-panel flex items-center justify-between gap-3 rounded-2xl px-4 py-3 md:px-5 md:-mx-5">
             <div className="flex min-w-0 items-center gap-3 lg:gap-10">
               <Link
                 href={dict.urls.home}
