@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { Container } from "@/components/Container";
+import { PhoneFrame } from "@/components/PhoneFrame";
 import { getLatestFeatures } from "@/constants/latestFeatures";
 import { Dictionary, Language } from "@/dictionaries";
 
@@ -150,37 +151,45 @@ export function PrimaryFeatures({ dict }: { dict: Dictionary }) {
 
           <aside className="glass-panel relative h-full overflow-visible rounded-[2.5rem] p-4 sm:p-5">
             <div className="relative h-full min-h-[46rem]">
-              <figure className="feature-shot-shadow-strong panel-stroke absolute left-1/2 top-[3%] z-30 w-[50%] -translate-x-1/2 rotate-[1deg] overflow-hidden rounded-[2rem] bg-ink-900/55">
-                <Image
-                  src={searchScreenshot}
-                  alt="Spark Memos search screen"
-                  className="aspect-[9/19] h-full w-full object-cover object-top"
-                  priority
-                />
+              <figure className="absolute left-1/2 top-[3%] z-30 w-[50%] -translate-x-1/2 rotate-[1deg]">
+                <PhoneFrame className="hero-phone-shadow w-full">
+                  <Image
+                    src={collectionsScreenshot}
+                    alt="Spark Memos collection view"
+                    className="h-full w-full object-contain"
+                    priority
+                  />
+                </PhoneFrame>
               </figure>
 
-              <figure className="feature-shot-shadow-soft panel-stroke absolute left-[-9%] top-[26%] z-20 w-[40%] -rotate-[7deg] overflow-hidden rounded-[2rem] bg-ink-900/55">
-                <Image
-                  src={collectionsScreenshot}
-                  alt="Spark Memos collection view"
-                  className="aspect-[9/19] h-full w-full object-cover object-top"
-                />
+              <figure className="absolute left-[-9%] top-[26%] z-20 w-[40%] -rotate-[7deg]">
+                <PhoneFrame className="hero-phone-shadow w-full">
+                  <Image
+                    src={searchScreenshot}
+                    alt="Spark Memos search screen"
+                    className="h-full w-full object-contain"
+                  />
+                </PhoneFrame>
               </figure>
 
-              <figure className="feature-shot-shadow-soft panel-stroke absolute right-[-9%] top-[33%] z-10 w-[40%] rotate-[6deg] overflow-hidden rounded-[2rem] bg-ink-900/55">
-                <Image
-                  src={activityScreenshot}
-                  alt="Spark Memos analytics screen"
-                  className="aspect-[9/19] h-full w-full object-cover object-top"
-                />
+              <figure className="absolute right-[-9%] top-[33%] z-10 w-[40%] rotate-[6deg]">
+                <PhoneFrame className="hero-phone-shadow w-full">
+                  <Image
+                    src={activityScreenshot}
+                    alt="Spark Memos analytics screen"
+                    className="h-full w-full object-contain"
+                  />
+                </PhoneFrame>
               </figure>
 
-              <figure className="feature-shot-shadow-strong panel-stroke absolute right-[-1%] top-[56%] z-40 w-[36%] -rotate-[4deg] overflow-hidden rounded-[2rem] bg-ink-900/55">
-                <Image
-                  src={memoReviewScreenshot}
-                  alt="Spark Memos memo review screen"
-                  className="aspect-[9/19] h-full w-full object-cover object-top"
-                />
+              <figure className="absolute right-[-1%] top-[56%] z-40 w-[36%] -rotate-[4deg]">
+                <PhoneFrame className="hero-phone-shadow w-full">
+                  <Image
+                    src={memoReviewScreenshot}
+                    alt="Spark Memos memo review screen"
+                    className="h-full w-full object-contain"
+                  />
+                </PhoneFrame>
               </figure>
             </div>
           </aside>
