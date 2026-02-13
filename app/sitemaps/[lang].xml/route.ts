@@ -1,6 +1,11 @@
 import { NextRequest } from "next/server";
 import { posts, categories } from "@/.velite";
 import {
+  comparisonSlugs,
+  getComparisonIndexPath,
+  getComparisonPath,
+} from "@/constants/comparisons";
+import {
   Language,
   defaultLanguage,
   dictionaryKeys,
@@ -112,6 +117,30 @@ export async function GET(
       ) as Record<string, string>
     )}\n    <lastmod>${localeLastmod}</lastmod>\n    <changefreq>yearly</changefreq>\n    <priority>0.4</priority>\n  </url>`
   );
+
+  // Comparison index
+  pages.push(
+    `\n  <url>\n    <loc>${
+      new URL(getComparisonIndexPath(locale), current.baseUrl).href
+    }</loc>${altFor(
+      Object.fromEntries(
+        allLocales.map(({ lang }) => [lang, getComparisonIndexPath(lang)])
+      ) as Record<string, string>
+    )}\n    <lastmod>${localeLastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>`
+  );
+
+  // Comparison detail pages
+  comparisonSlugs.forEach((slug) => {
+    pages.push(
+      `\n  <url>\n    <loc>${
+        new URL(getComparisonPath(locale, slug), current.baseUrl).href
+      }</loc>${altFor(
+        Object.fromEntries(
+          allLocales.map(({ lang }) => [lang, getComparisonPath(lang, slug)])
+        ) as Record<string, string>
+      )}\n    <lastmod>${localeLastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>`
+    );
+  });
 
   // Posts for the current lang, with alternates
   posts

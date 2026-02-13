@@ -1,10 +1,17 @@
 import Link from "next/link";
 
+import {
+  getComparisonIndexPath,
+  getComparisonLocaleContent,
+  getComparisonPages,
+  getComparisonPath,
+  getFooterComparisonLabel,
+} from "@/constants/comparisons";
 import { Container } from "@/components/Container";
 import { Logomark } from "@/components/Logo";
 import { NavLinks } from "@/components/NavLinks";
 import { METADATA } from "@/constants/metadata";
-import { Dictionary, Language } from "@/dictionaries";
+import { Dictionary, Language, isLanguage } from "@/dictionaries";
 import { AppStoreQRCode } from "./QRCode";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
@@ -21,6 +28,20 @@ function QrCodeBorder(props: React.ComponentPropsWithoutRef<"svg">) {
 }
 
 export function Footer({ dict }: { dict: Dictionary }) {
+  const localePart = dict.urls.home.split("/")[1];
+  const locale = isLanguage(localePart) ? localePart : "en";
+  const compareCopy = getComparisonLocaleContent(locale);
+  const compareLinks = [
+    {
+      href: getComparisonIndexPath(locale),
+      label: compareCopy.footer.allComparisons,
+    },
+    ...getComparisonPages(locale).map((page) => ({
+      href: getComparisonPath(locale, page.slug),
+      label: getFooterComparisonLabel(locale, page.competitorName),
+    })),
+  ];
+
   return (
     <footer className="mt-20 pb-10 sm:pb-14">
       <Container>
@@ -37,6 +58,22 @@ export function Footer({ dict }: { dict: Dictionary }) {
               <nav className="mt-7 flex flex-wrap gap-x-4 gap-y-3">
                 <NavLinks type="footer" dict={dict} />
               </nav>
+              <div className="mt-6">
+                <p className="text-xs font-semibold tracking-[0.16em] text-ink-200 uppercase">
+                  {compareCopy.footer.title}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2.5">
+                  {compareLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="panel-stroke rounded-full bg-ink-900/45 px-3 py-1.5 text-xs font-medium text-ink-100 hover:border-ink-200/45 hover:text-white"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             </div>
             <div className="panel-stroke relative flex items-center gap-6 rounded-[1.75rem] bg-ink-900/55 p-5 sm:p-7">
               <div className="relative flex h-24 w-24 shrink-0 items-center justify-center text-white">
