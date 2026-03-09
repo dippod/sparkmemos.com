@@ -4,12 +4,7 @@ slug: the-art-of-fleeting-notes
 lang: zh
 date: 2026-03-09 00:00:00
 categories:
-  - productivity
-tags:
-  - Notes
-  - Habit
-  - Productivity
-description: 学习如何培养闪念笔记的习惯，把杂乱的思绪转化为可执行的创意。
+  - usage
 keywords:
   - 闪念笔记
   - 捕捉想法

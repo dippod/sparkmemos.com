@@ -4,12 +4,7 @@ slug: the-art-of-fleeting-notes
 lang: ko
 date: 2026-03-09 00:00:00
 categories:
-  - productivity
-tags:
-  - Notes
-  - Habit
-  - Productivity
-description: 일闪 노트 습관을 구축하고 무작위적인 생각을 실행 가능한 아이디어로 전환하는 방법을 배우세요.
+  - usage
 keywords:
   - 일闪 노트
   - 생각 기록
