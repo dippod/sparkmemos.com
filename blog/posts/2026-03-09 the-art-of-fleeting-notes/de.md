@@ -4,12 +4,7 @@ slug: the-art-of-fleeting-notes
 lang: de
 date: 2026-03-09 00:00:00
 categories:
-  - productivity
-tags:
-  - Notes
-  - Habit
-  - Productivity
-description: Lerne, wie man eine flüchtige Notizen-Gewohnheit aufbaut und zufällige Gedanken in umsetzbare Ideen verwandelt.
+  - usage
 keywords:
   - flüchtige Notizen
   - Gedanken festhalten

@@ -4,12 +4,7 @@ slug: the-art-of-fleeting-notes
 lang: en
 date: 2026-03-09 00:00:00
 categories:
-  - productivity
-tags:
-  - Notes
-  - Habit
-  - Productivity
-description: Learn how to build a fleeting notes habit and turn random thoughts into actionable ideas.
+  - usage
 keywords:
   - fleeting notes
   - capture thoughts

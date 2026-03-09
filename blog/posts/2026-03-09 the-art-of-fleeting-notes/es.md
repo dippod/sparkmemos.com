@@ -4,12 +4,7 @@ slug: the-art-of-fleeting-notes
 lang: es
 date: 2026-03-09 00:00:00
 categories:
-  - productivity
-tags:
-  - Notes
-  - Habit
-  - Productivity
-description: Aprende a construir el hábito de tomar notas fugaces y transformar pensamientos aleatorios en ideas accionables.
+  - usage
 keywords:
   - notas fugaces
   - capturar pensamientos

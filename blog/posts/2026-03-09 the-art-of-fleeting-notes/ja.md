@@ -4,12 +4,7 @@ slug: the-art-of-fleeting-notes
 lang: ja
 date: 2026-03-09 00:00:00
 categories:
-  - productivity
-tags:
-  - Notes
-  - Habit
-  - Productivity
-description: クイックノートの習慣を身に付け、散らかった思考を実行可能なアイデアに変える方法を学びましょう。
+  - usage
 keywords:
   - クイックノート
   - 思考の記録
