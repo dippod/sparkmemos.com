@@ -69,12 +69,12 @@ jobs:
           ACCOUNT_ID=${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           WORKER_NAME="sparkmemos"
           
-          ACCOUNT_RESPONSE=$(curl -s -X GET \
-            "https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}" \
+          SUBDOMAIN_RESPONSE=$(curl -s -X GET \
+            "https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/workers/subdomain" \
             -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
             -H "Content-Type: application/json")
           
-          ACCOUNT_SUBDOMAIN=$(echo $ACCOUNT_RESPONSE | jq -r '.result.meta.workers_subdomain // empty')
+          ACCOUNT_SUBDOMAIN=$(echo $SUBDOMAIN_RESPONSE | jq -r '.result.subdomain // empty')
           
           if [ -z "$ACCOUNT_SUBDOMAIN" ]; then
             ACCOUNT_SUBDOMAIN=$ACCOUNT_ID
