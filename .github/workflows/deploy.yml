@@ -1,4 +1,4 @@
-name: Deploy
+name: CI
 
 on:
   push:
@@ -7,11 +7,10 @@ on:
   pull_request:
 
 jobs:
-  deploy:
+  lint:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      deployments: write
 
     steps:
       - uses: actions/checkout@v4
@@ -25,35 +24,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
-        env:
-          NODE_ENV: production
-
-      - name: Deploy to Cloudflare (Preview for PR / Production for main)
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: |
-            if [ "${{ github.event_name }}" = "pull_request" ]; then
-              # Deploy to preview with unique name based on PR number
-              opennextjs-cloudflare build
-              wrangler deploy --env preview --name sparkmemos-pr-${{ github.event.pull_request.number }}
-            else
-              # Deploy to production
-              opennextjs-cloudflare deploy
-            fi
-
-      - name: Deploy status comment
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const previewUrl = `https://sparkmemos-pr-${{ github.event.pull_request.number }}.workers.dev`;
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
-              body: `🚀 Preview deployed: ${previewUrl}`
-            });
+      - name: Lint
+        run: npm run lint
